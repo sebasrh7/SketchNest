@@ -1,16 +1,20 @@
 import React from "react";
+import { useCanvas } from "../../contexts/CanvasContext";
 import { THICKNESS } from "../../utils/constants";
 import Back from "../icons/Back";
 import Forward from "../icons/Forward";
 import "../../styles/Actions.css";
 
 const Actions = () => {
+
+  const { handleChangeStrokeWidth } = useCanvas();
+
   return (
     <aside className="actions">
       <div className="actions-container">
         <div className="thickness-buttons">
           {THICKNESS.map((thickness) => (
-            <button key={thickness} className="action-button">
+            <button key={thickness} className="action-button" onClick={() => handleChangeStrokeWidth(thickness)}>
               <span
                 className="thickness-circle"
                 style={{ width: `${thickness}px`, height: `${thickness}px` }}
