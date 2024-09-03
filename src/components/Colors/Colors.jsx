@@ -1,11 +1,10 @@
 import React from "react";
+import { useCanvas } from "../../contexts/CanvasContext";
 import { PALETTE_COLORS } from "../../utils/constants";
 import "../../styles/Colors.css";
 
 const Colors = () => {
-  const handleColorClick = (color) => {
-    console.log(color);
-  };
+  const { handleChangeColor } = useCanvas();
 
   return (
     <aside className="colors">
@@ -17,12 +16,17 @@ const Colors = () => {
               key={index}
               className="color-swatch"
               style={{ backgroundColor: color }}
-              onClick={() => handleColorClick(color)}
+              onClick={() => handleChangeColor(color)}
             />
           ))}
         </div>
 
-        <input type="color" name="color-picker" id="color-picker" />
+        <input
+          type="color"
+          name="color-picker"
+          id="color-picker"
+          onChange={(e) => handleChangeColor(e.target.value)}
+        />
       </div>
     </aside>
   );
