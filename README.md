@@ -14,16 +14,16 @@ SketchNest is a drawing application built with React, featuring a canvas with va
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/sketchnest.git
+   git clone https://github.com/sebasrh7/SketchNest.git
 
    ```
 
 2. Install dependencies:
    ```bash
-       npm install
+    npm install
    ```
 
 3. Start the development server:
    ```bash
-       npm run dev
+    npm run dev
    ```
