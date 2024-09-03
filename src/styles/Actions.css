@@ -1,0 +1,131 @@
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+  .actions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--crimson-red);
+
+    .thickness-buttons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+
+      .action-button {
+        border-radius: 50%;
+        padding: 0;
+
+        .thickness-circle {
+          border-radius: 50%;
+          background-color: var(--pure-white);
+        }
+      }
+    }
+
+    .transparency-slider {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      height: 42px;
+      width: 100%;
+
+      padding-inline: 10px;
+
+      border-radius: 5px;
+      border: 2px solid var(--pure-white);
+
+      background-color: var(--coral-pink);
+
+      .transparency-circle-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .transparency-circle {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 2px solid var(--pure-white);
+          background-color: var(--pure-white);
+        }
+
+        .opacity-1 {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+      }
+
+      /* Barra del slider */
+      .action-slider {
+        -webkit-appearance: none; /* Quita el estilo por defecto de los sliders */
+        appearance: none;
+
+        width: 100%; /* Ancho del slider */
+        height: 6px; /* Grosor del slider */
+
+        border-radius: 5px; /* Redondea las esquinas del slider */
+
+        background: var(--pure-white); /* Color del slider */
+        outline: none; /* Quita el borde por defecto del slider */
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+
+        cursor: pointer; /* Cambia el cursor al pasar por encima del slider */
+      }
+
+      /* Circulo del slider */
+      .action-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--crimson-red);
+        border: 2px solid var(--pure-white);
+        cursor: pointer;
+      }
+    }
+
+    .undo-redo-buttons {
+      display: flex;
+      gap: 5px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .actions {
+    .actions-container {
+      flex-direction: column;
+      gap: 10px;
+
+      .transparency-slider {
+        height: 32px;
+
+        .transparency-circle-container {
+          .transparency-circle {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .action-slider {
+          height: 4px;
+        }
+
+        .action-slider::-webkit-slider-thumb {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}

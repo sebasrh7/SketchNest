@@ -1,0 +1,43 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+
+/* Variables CSS para los temas */
+:root {
+  --background-color: #f0f0f0;
+  --text-color: #000000;
+  --canvas-background: #ffffff;
+  --work-area-background: #ab190c;
+
+  --deep-ocean-blue: #0c1a26;
+  --teal-green: #048c7f;
+  --crimson-red: #f22613;
+  --coral-pink: #f2594b;
+  --pure-white: #f2f2f2;
+}
+
+[data-theme="dark"] {
+  --background-color: #121212;
+  --text-color: #e0e0e0;
+  --canvas-background: #ffffff;
+  --work-area-background: #a12626;
+
+  --deep-ocean-blue: #1b2a3a;
+  --teal-green: #00adb5;
+  --crimson-red: #ff3e3e;
+  --coral-pink: #ff6b6b;
+  --pure-white: #f2f2f2;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
