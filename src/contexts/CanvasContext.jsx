@@ -36,6 +36,7 @@ export const CanvasProvider = ({ children }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d", { willReadFrequently: true });
+
     setCtx(context);
   }, []);
 
@@ -57,6 +58,9 @@ export const CanvasProvider = ({ children }) => {
 
     const offsetX = e.nativeEvent.offsetX;
     const offsetY = e.nativeEvent.offsetY;
+
+    ctx.lineCap = "round"; // Ajusta para suavizar los bordes
+
 
     setStartX(offsetX);
     setStartY(offsetY);
@@ -169,17 +173,8 @@ export const CanvasProvider = ({ children }) => {
     }
 
     if (mode === MODES.FILL) {
-
       return;
     }
-
-    if (mode === MODES.CLEAR) {
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      return;
-    }
-    
-
-
   };
 
   // Dejar de dibujar
@@ -188,24 +183,21 @@ export const CanvasProvider = ({ children }) => {
   };
 
   // Cambiar el color del trazo
-  const handleChangeColor = (event) => {
-    ctx.strokeStyle = event.target.value;
-    ctx.fillStyle = event.target.value;
+  const handleChangeColor = (color) => {
+    ctx.strokeStyle = color;
   };
 
   // Cambiar el grosor del trazo
-  const handleChangeStrokeWidth = (event) => {
-    ctx.lineWidth = event.target.value;
+  const handleChangeStrokeWidth = (width) => {
+    console.log("width", width);
+    ctx.lineWidth = width;
   };
 
   // Limpiar el canvas
   const clearCanvas = () => {
-    ctxRef.current.clearRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    );
+    if (ctx && canvasRef.current) {
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
   };
 
   // Subir una imagen al canvas
@@ -251,6 +243,7 @@ export const CanvasProvider = ({ children }) => {
 
         handleChangeColor,
         clearCanvas,
+        handleChangeStrokeWidth,
 
         uploadImageToCanvas,
         downloadDrawing,
