@@ -19,3 +19,12 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  .toolbar {
+    .toolbar-container {
+      display:flex;
+      flex-direction: column;
+    }
+  }
+}
