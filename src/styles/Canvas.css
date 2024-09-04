@@ -17,6 +17,7 @@
 
     canvas {
       background-color: white;
+      touch-action: none; /* Evita el zoom y el scroll en el canvas */
     }
   }
 }
