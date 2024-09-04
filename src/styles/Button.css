@@ -16,6 +16,23 @@ button {
   cursor: pointer;
 
   padding: 0;
+
+  &:hover {
+    background-color: var(--dark-coral-pink);
+  }
+
+  &:active {
+    background-color: var(--dark-coral-pink);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: var(--light-gray);
+    cursor: not-allowed;
+  }
 }
 
 @media (max-width: 900px) {
