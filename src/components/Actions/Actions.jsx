@@ -7,7 +7,7 @@ import "../../styles/Actions.css";
 
 const Actions = () => {
 
-  const { handleChangeStrokeWidth } = useCanvas();
+  const { handleChangeStrokeWidth, handleTransparency, handleUndo, handleRedo, undos, redos } = useCanvas();
 
   return (
     <aside className="actions">
@@ -28,10 +28,12 @@ const Actions = () => {
             <span className="transparency-circle opacity-1" />
           </div>
           <input
+            onChange={handleTransparency}
             type="range"
-            min="0"
+            min="0.1"
             max="1"
             step="0.1"
+            defaultValue="1"
             className="action-slider"
           />
           <div className="transparency-circle-container">
@@ -40,10 +42,10 @@ const Actions = () => {
         </div>
 
         <div className="undo-redo-buttons">
-          <button className="action-button">
+          <button className="action-button" onClick={handleUndo} disabled={undos.length === 0}>
             <Back />
           </button>
-          <button className="action-button">
+          <button className="action-button" onClick={handleRedo} disabled={redos.length === 0}>
             <Forward />
           </button>
         </div>
