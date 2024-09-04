@@ -16,8 +16,9 @@
     align-items: center;
 
     canvas {
-      background-color: white;
-      touch-action: none; /* Evita el zoom y el scroll en el canvas */
+      background-color: rgb(255, 255, 255);
+      -ms-touch-action: none;
+      touch-action: none;
     }
   }
 }

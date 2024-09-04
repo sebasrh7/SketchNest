@@ -37,15 +37,6 @@ export const CanvasProvider = ({ children }) => {
   // Guardar el contexto en una referencia para poder acceder a él en los eventos
   useEffect(() => {
     const canvas = canvasRef.current;
-    const mediaQuery = window.matchMedia("(max-width: 900px)");
-
-    if (mediaQuery.matches) {
-      canvas.width = 300;
-      canvas.height = 500;
-    } else {
-      canvas.width = 600;
-      canvas.height = 400;
-    }
 
     canvas.style.cursor = "crosshair";
 
@@ -63,6 +54,19 @@ export const CanvasProvider = ({ children }) => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
 
+    // si en celulares se usa los dos dedos, actua como si se presionara shift
+    document.addEventListener("touchstart", (e) => {
+      if (e.touches.length > 1) {
+        setIsShiftPressed(true);
+      }
+    });
+
+    document.addEventListener("touchend", (e) => {
+      if (e.touches.length === 0) {
+        setIsShiftPressed(false);
+      }
+    });
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
@@ -75,7 +79,6 @@ export const CanvasProvider = ({ children }) => {
   const getCoordinates = (e) => {
     if (e.touches) {
       const rect = canvasRef.current.getBoundingClientRect();
-      console.log("rect", rect);
       return {
         offsetX: e.touches[0].clientX - rect.left,
         offsetY: e.touches[0].clientY - rect.top,
@@ -90,7 +93,7 @@ export const CanvasProvider = ({ children }) => {
 
   // Iniciar el dibujo
   const startDrawing = (e) => {
-    //e.preventDefault(); // Prevenir comportamiento predeterminado
+    e.preventDefault(); // Prevenir comportamiento predeterminado
 
     setIsDrawing(true);
 
@@ -113,6 +116,9 @@ export const CanvasProvider = ({ children }) => {
 
   // Dibujar
   const draw = (e) => {
+    // Como hago pasivo el evento touchmove? No quiero que se mueva la pantalla
+    e.preventDefault();
+
     if (!isDrawing) return;
 
     const { offsetX, offsetY } = getCoordinates(e);
@@ -251,8 +257,6 @@ export const CanvasProvider = ({ children }) => {
 
   // Adelante y atras
   const saveCanvasState = () => {
-    console.log(undos);
-    console.log(redos);
     const canvas = canvasRef.current;
     const data = canvas.toDataURL();
 
@@ -264,7 +268,6 @@ export const CanvasProvider = ({ children }) => {
   };
 
   const handleUndo = () => {
-    console.log("undos", undos);
     if (undos.length > 0) {
       const lastState = undos[undos.length - 1];
       setRedos((prev) => [lastState, ...prev]);
@@ -275,7 +278,6 @@ export const CanvasProvider = ({ children }) => {
   };
 
   const handleRedo = () => {
-    console.log("redos", redos);
     if (redos.length > 0) {
       const lastState = redos[0];
       setUndos((prev) => [...prev, lastState]);
@@ -364,6 +366,9 @@ export const CanvasProvider = ({ children }) => {
         handleRedo,
         undos,
         redos,
+
+        handleKeyDown,
+        handleKeyUp,
 
         uploadImageToCanvas,
         downloadDrawing,
