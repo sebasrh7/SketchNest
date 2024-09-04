@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import { MODES } from "../utils/constants";
+import { MODES, THICKNESS } from "../utils/constants";
 
 // Crear el contexto
 const CanvasContext = createContext();
@@ -18,6 +18,7 @@ export const useCanvas = () => useContext(CanvasContext);
 export const CanvasProvider = ({ children }) => {
   // REFERENCIAS
   const canvasRef = useRef(null);
+  const ctxRef = useRef(null);
 
   // ESTADOS
   const [isDrawing, setIsDrawing] = useState(false);
@@ -28,16 +29,33 @@ export const CanvasProvider = ({ children }) => {
   const [lastY, setLastY] = useState(0);
   const [isShiftPressed, setIsShiftPressed] = useState(false);
   const [imageData, setImageData] = useState(null);
-  const [ctx, setCtx] = useState(null);
+  const [undos, setUndos] = useState([]);
+  const [redos, setRedos] = useState([]);
 
   // EFECTOS
 
   // Guardar el contexto en una referencia para poder acceder a él en los eventos
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d", { willReadFrequently: true });
+    const mediaQuery = window.matchMedia("(max-width: 900px)");
 
-    setCtx(context);
+    if (mediaQuery.matches) {
+      canvas.width = 300;
+      canvas.height = 500;
+    } else {
+      canvas.width = 600;
+      canvas.height = 400;
+    }
+
+    canvas.style.cursor = "crosshair";
+
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    context.strokeStyle = "#000000";
+    context.lineJoin = "round";
+    context.lineCap = "round";
+    context.lineWidth = THICKNESS[0];
+
+    ctxRef.current = context;
   }, []);
 
   // Eventos de teclado
@@ -52,15 +70,31 @@ export const CanvasProvider = ({ children }) => {
   }, []);
 
   // FUNCIONES
+
+  // Obtener las coordenadas del mouse o el tacto
+  const getCoordinates = (e) => {
+    if (e.touches) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      console.log("rect", rect);
+      return {
+        offsetX: e.touches[0].clientX - rect.left,
+        offsetY: e.touches[0].clientY - rect.top,
+      };
+    } else {
+      return {
+        offsetX: e.nativeEvent.offsetX,
+        offsetY: e.nativeEvent.offsetY,
+      };
+    }
+  };
+
   // Iniciar el dibujo
   const startDrawing = (e) => {
+    //e.preventDefault(); // Prevenir comportamiento predeterminado
+
     setIsDrawing(true);
 
-    const offsetX = e.nativeEvent.offsetX;
-    const offsetY = e.nativeEvent.offsetY;
-
-    ctx.lineCap = "round"; // Ajusta para suavizar los bordes
-
+    const { offsetX, offsetY } = getCoordinates(e);
 
     setStartX(offsetX);
     setStartY(offsetY);
@@ -68,7 +102,12 @@ export const CanvasProvider = ({ children }) => {
     setLastY(offsetY);
 
     setImageData(
-      ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)
+      ctxRef.current.getImageData(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      )
     );
   };
 
@@ -76,27 +115,26 @@ export const CanvasProvider = ({ children }) => {
   const draw = (e) => {
     if (!isDrawing) return;
 
-    const offsetX = e.nativeEvent.offsetX;
-    const offsetY = e.nativeEvent.offsetY;
+    const { offsetX, offsetY } = getCoordinates(e);
 
     if (mode === MODES.ERASER) {
-      ctx.globalCompositeOperation = "destination-out";
+      ctxRef.current.globalCompositeOperation = "destination-out";
     } else {
-      ctx.globalCompositeOperation = "source-over";
+      ctxRef.current.globalCompositeOperation = "source-over";
     }
 
     if (mode === MODES.PEN || mode === MODES.ERASER) {
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(offsetX, offsetY);
-      ctx.stroke();
+      ctxRef.current.beginPath();
+      ctxRef.current.moveTo(lastX, lastY);
+      ctxRef.current.lineTo(offsetX, offsetY);
+      ctxRef.current.stroke();
       setLastX(offsetX);
       setLastY(offsetY);
       return;
     }
 
     if (mode === MODES.RECTANGLE) {
-      ctx.putImageData(imageData, 0, 0);
+      ctxRef.current.putImageData(imageData, 0, 0);
       let width = offsetX - startX;
       let height = offsetY - startY;
 
@@ -106,15 +144,15 @@ export const CanvasProvider = ({ children }) => {
         height = height > 0 ? sideLength : -sideLength;
       }
 
-      ctx.beginPath();
-      ctx.rect(startX, startY, width, height);
-      ctx.stroke();
+      ctxRef.current.beginPath();
+      ctxRef.current.rect(startX, startY, width, height);
+      ctxRef.current.stroke();
 
       return;
     }
 
     if (mode === MODES.CIRCLE) {
-      ctx.putImageData(imageData, 0, 0);
+      ctxRef.current.putImageData(imageData, 0, 0);
 
       // ovalo y con shift es circulo
       let radiusX = (offsetX - startX) / 2;
@@ -129,8 +167,8 @@ export const CanvasProvider = ({ children }) => {
       const centerX = startX + radiusX;
       const centerY = startY + radiusY;
 
-      ctx.beginPath();
-      ctx.ellipse(
+      ctxRef.current.beginPath();
+      ctxRef.current.ellipse(
         centerX,
         centerY,
         Math.abs(radiusX),
@@ -139,34 +177,34 @@ export const CanvasProvider = ({ children }) => {
         0,
         2 * Math.PI
       );
-      ctx.stroke();
+      ctxRef.current.stroke();
 
       return;
     }
 
     if (mode === MODES.LINE) {
-      ctx.putImageData(imageData, 0, 0);
+      ctxRef.current.putImageData(imageData, 0, 0);
 
       if (isShiftPressed) {
         const dx = offsetX - startX;
         const dy = offsetY - startY;
 
         if (Math.abs(dx) > Math.abs(dy)) {
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(offsetX, startY);
-          ctx.stroke();
+          ctxRef.current.beginPath();
+          ctxRef.current.moveTo(startX, startY);
+          ctxRef.current.lineTo(offsetX, startY);
+          ctxRef.current.stroke();
         } else {
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(startX, offsetY);
-          ctx.stroke();
+          ctxRef.current.beginPath();
+          ctxRef.current.moveTo(startX, startY);
+          ctxRef.current.lineTo(startX, offsetY);
+          ctxRef.current.stroke();
         }
       } else {
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(offsetX, offsetY);
-        ctx.stroke();
+        ctxRef.current.beginPath();
+        ctxRef.current.moveTo(startX, startY);
+        ctxRef.current.lineTo(offsetX, offsetY);
+        ctxRef.current.stroke();
       }
 
       return;
@@ -177,36 +215,112 @@ export const CanvasProvider = ({ children }) => {
     }
   };
 
+  // Transparencia
+  const handleTransparency = (e) => {
+    const value = e.target.value;
+    ctxRef.current.globalAlpha = value;
+  };
+
   // Dejar de dibujar
   const stopDrawing = () => {
+    saveCanvasState(); // Guardar el estado del canvas para
     setIsDrawing(false);
   };
 
   // Cambiar el color del trazo
   const handleChangeColor = (color) => {
-    ctx.strokeStyle = color;
+    ctxRef.current.strokeStyle = color;
   };
 
   // Cambiar el grosor del trazo
   const handleChangeStrokeWidth = (width) => {
-    console.log("width", width);
-    ctx.lineWidth = width;
+    ctxRef.current.lineWidth = width;
   };
 
   // Limpiar el canvas
   const clearCanvas = () => {
-    if (ctx && canvasRef.current) {
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    if (ctxRef.current && canvasRef.current) {
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
     }
+  };
+
+  // Adelante y atras
+  const saveCanvasState = () => {
+    console.log(undos);
+    console.log(redos);
+    const canvas = canvasRef.current;
+    const data = canvas.toDataURL();
+
+    // Verifica si el último estado guardado es diferente del nuevo estado
+    if (undos.length === 0 || undos[undos.length - 1] !== data) {
+      setUndos((prev) => [...prev, data]);
+      setRedos([]); // Limpiar los redos
+    }
+  };
+
+  const handleUndo = () => {
+    console.log("undos", undos);
+    if (undos.length > 0) {
+      const lastState = undos[undos.length - 1];
+      setRedos((prev) => [lastState, ...prev]);
+      const updatedUndos = undos.slice(0, -1);
+      setUndos(updatedUndos);
+      restoreCanvas(updatedUndos[updatedUndos.length - 1] || null);
+    }
+  };
+
+  const handleRedo = () => {
+    console.log("redos", redos);
+    if (redos.length > 0) {
+      const lastState = redos[0];
+      setUndos((prev) => [...prev, lastState]);
+      const updatedRedos = redos.slice(1);
+      setRedos(updatedRedos);
+      restoreCanvas(lastState);
+    }
+  };
+
+  const restoreCanvas = (dataUrl) => {
+    if (!dataUrl) {
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      return;
+    }
+
+    const img = new Image();
+    img.src = dataUrl;
+
+    img.onload = () => {
+      ctxRef.current.clearRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      ctxRef.current.drawImage(img, 0, 0);
+    };
   };
 
   // Subir una imagen al canvas
   const uploadImageToCanvas = (imageSrc) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
     const img = new Image();
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      ctxRef.current.drawImage(
+        img,
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
     };
     img.src = imageSrc;
   };
@@ -244,6 +358,12 @@ export const CanvasProvider = ({ children }) => {
         handleChangeColor,
         clearCanvas,
         handleChangeStrokeWidth,
+        handleTransparency,
+
+        handleUndo,
+        handleRedo,
+        undos,
+        redos,
 
         uploadImageToCanvas,
         downloadDrawing,
