@@ -5,6 +5,7 @@ import Circle from "../components/icons/Circle.jsx";
 import Line from "../components/icons/Line.jsx";
 import Fill from "../components/icons/Fill.jsx";
 import Trash from "../components/icons/Trash.jsx";
+import Picker from "../components/icons/Picker.jsx";
 
 export const MODES = {
   LINE: "LINE",
@@ -15,6 +16,7 @@ export const MODES = {
   ERASER: "ERASER",
   FILL: "FILL",
   CLEAR: "CLEAR",
+  PICKER: "PICKER",
 };
 
 export const TOOLS = [
@@ -41,6 +43,10 @@ export const TOOLS = [
   {
     id: MODES.FILL,
     icon: <Fill />,
+  },
+  {
+    id: MODES.PICKER,
+    icon: <Picker />,
   },
   {
     id: MODES.CLEAR,

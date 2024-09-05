@@ -13,26 +13,17 @@ const Canvas = () => {
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
+          width={560}
+          height={420}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseLeave={stopDrawing}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            startDrawing(e);
-          }}
-          onTouchMove={(e) => {
-            e.preventDefault();
-            draw(e);
-          }}
-          onTouchEnd={(e) => {
-            e.preventDefault(); // Evita el desplazamiento
-            stopDrawing();
-          }}
-          onTouchCancel={(e) => {
-            e.preventDefault(); // Evita el desplazamiento
-            stopDrawing();
-          }}
+          
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
+          onTouchEnd={stopDrawing}
+          onTouchCancel={stopDrawing}
         />
       </div>
     </section>

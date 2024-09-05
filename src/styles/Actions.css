@@ -37,6 +37,7 @@
 
       height: 42px;
       min-width: 160px;
+      max-width: 200px;
       width: 100%;
 
       padding-inline: 10px;

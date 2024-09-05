@@ -12,18 +12,13 @@
     padding: 10px;
     border-radius: 5px;
     background-color: var(--crimson-red);
-
-    #CLEAR {
-      grid-column: span 2;
-      width: 100%;
-    }
   }
 }
 
 @media (max-width: 900px) {
   .toolbar {
     .toolbar-container {
-      display:flex;
+      display: flex;
       flex-direction: column;
     }
   }

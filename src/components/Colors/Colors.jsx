@@ -4,7 +4,7 @@ import { PALETTE_COLORS } from "../../utils/constants";
 import "../../styles/Colors.css";
 
 const Colors = () => {
-  const { handleChangeColor } = useCanvas();
+  const { handleChangeColor, selectedColor } = useCanvas();
 
   return (
     <aside className="colors">
@@ -16,7 +16,9 @@ const Colors = () => {
               key={index}
               className="color-swatch"
               style={{ backgroundColor: color }}
-              onClick={() => handleChangeColor(color)}
+              onClick={() => {
+                handleChangeColor(color);
+              }}
             />
           ))}
         </div>
@@ -25,7 +27,10 @@ const Colors = () => {
           type="color"
           name="color-picker"
           id="color-picker"
-          onChange={(e) => handleChangeColor(e.target.value)}
+          value={selectedColor}
+          onChange={(e) => {
+            handleChangeColor(e.target.value);
+          }}
         />
       </div>
     </aside>
