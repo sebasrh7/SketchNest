@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCanvas } from "../../contexts/CanvasContext";
 import { PALETTE_COLORS } from "../../utils/constants";
 import "../../styles/Colors.css";
 
 const Colors = () => {
-  const { handleChangeColor } = useCanvas();
-
-  const [selectedColor, setSelectedColor] = useState(PALETTE_COLORS[0]);
+  const { handleChangeColor, selectedColor } = useCanvas();
 
   return (
     <aside className="colors">
@@ -19,7 +17,6 @@ const Colors = () => {
               className="color-swatch"
               style={{ backgroundColor: color }}
               onClick={() => {
-                setSelectedColor(color);
                 handleChangeColor(color);
               }}
             />
@@ -32,7 +29,6 @@ const Colors = () => {
           id="color-picker"
           value={selectedColor}
           onChange={(e) => {
-            setSelectedColor(e.target.value);
             handleChangeColor(e.target.value);
           }}
         />

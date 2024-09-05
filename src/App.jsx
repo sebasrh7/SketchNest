@@ -9,7 +9,7 @@ import "./App.css";
 function App() {
   return (
     <CanvasProvider>
-      <main className="grid">
+      <main className="app">
         <Colors />
         <Canvas />
         <Toolbar />

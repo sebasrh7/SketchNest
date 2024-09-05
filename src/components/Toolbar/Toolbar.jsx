@@ -8,7 +8,7 @@ import Button from "../Button.jsx";
 import "../../styles/Toolbar.css";
 
 const Toolbar = () => {
-  const { setMode, clearCanvas } = useCanvas();
+  const { setMode, clearCanvas, handlePicker } = useCanvas();
 
   return (
     <aside className="toolbar">
@@ -19,7 +19,13 @@ const Toolbar = () => {
             id={tool.id}
             icon={tool.icon}
             onClick={() => {
-              tool.id === "CLEAR" ? clearCanvas() : setMode(tool.id);
+              if (tool.id === "CLEAR") {
+                clearCanvas();
+              } else if (tool.id === "PICKER") {
+                handlePicker();
+              } else {
+                setMode(tool.id);
+              }
             }}
           />
         ))}

@@ -13,15 +13,17 @@ const Canvas = () => {
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
+          width={560}
+          height={420}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseLeave={stopDrawing}
+          
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={stopDrawing}
           onTouchCancel={stopDrawing}
-          onKeyPress={draw}
         />
       </div>
     </section>

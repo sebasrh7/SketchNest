@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import { MODES, THICKNESS } from "../utils/constants";
+import { MODES, THICKNESS, PALETTE_COLORS } from "../utils/constants";
 
 // Crear el contexto
 const CanvasContext = createContext();
@@ -31,6 +31,7 @@ export const CanvasProvider = ({ children }) => {
   const [imageData, setImageData] = useState(null);
   const [undos, setUndos] = useState([]);
   const [redos, setRedos] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(PALETTE_COLORS[0]);
 
   // EFECTOS
 
@@ -41,7 +42,6 @@ export const CanvasProvider = ({ children }) => {
     canvas.style.cursor = "crosshair";
 
     const context = canvas.getContext("2d", { willReadFrequently: true });
-    context.strokeStyle = "#000000";
     context.lineJoin = "round";
     context.lineCap = "round";
     context.lineWidth = THICKNESS[0];
@@ -53,19 +53,6 @@ export const CanvasProvider = ({ children }) => {
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
-
-    // si en celulares se usa los dos dedos, actua como si se presionara shift
-    document.addEventListener("touchstart", (e) => {
-      if (e.touches.length > 1) {
-        setIsShiftPressed(true);
-      }
-    });
-
-    document.addEventListener("touchend", (e) => {
-      if (e.touches.length === 0) {
-        setIsShiftPressed(false);
-      }
-    });
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
@@ -112,6 +99,21 @@ export const CanvasProvider = ({ children }) => {
         canvasRef.current.height
       )
     );
+
+    if (mode === MODES.FILL) {
+      const fillColor = hexToRgba(ctxRef.current.strokeStyle);
+      fillDrawing(offsetX, offsetY, fillColor);
+      saveCanvasState(); // Guardar el estado del canvas después de rellenar
+      setIsDrawing(false);
+    }
+  };
+
+  const hexToRgba = (hex) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const a = ctxRef.current.globalAlpha * 255;
+    return [r, g, b, a];
   };
 
   // Dibujar
@@ -215,12 +217,7 @@ export const CanvasProvider = ({ children }) => {
 
       return;
     }
-
-    if (mode === MODES.FILL) {
-      return;
-    }
   };
-
   // Transparencia
   const handleTransparency = (e) => {
     const value = e.target.value;
@@ -233,9 +230,24 @@ export const CanvasProvider = ({ children }) => {
     setIsDrawing(false);
   };
 
+  const handlePicker = async () => {
+    let prevMode = mode;
+    try {
+      const eyeDropper = new EyeDropper();
+      const result = await eyeDropper.open();
+      handleChangeColor(result.sRGBHex);
+
+      // Cambiar al modo anterior
+      setMode(prevMode);
+    } catch (error) {
+      console.error("Error using EyeDropper:", error);
+    }
+    setIsDrawing(false);
+  };
   // Cambiar el color del trazo
   const handleChangeColor = (color) => {
     ctxRef.current.strokeStyle = color;
+    setSelectedColor(color);
   };
 
   // Cambiar el grosor del trazo
@@ -246,6 +258,7 @@ export const CanvasProvider = ({ children }) => {
   // Limpiar el canvas
   const clearCanvas = () => {
     if (ctxRef.current && canvasRef.current) {
+      // Limpiar el canvas
       ctxRef.current.clearRect(
         0,
         0,
@@ -253,6 +266,82 @@ export const CanvasProvider = ({ children }) => {
         canvasRef.current.height
       );
     }
+  };
+
+  const fillDrawing = (startX, startY, fillColor) => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const { data } = imageData; // Obtener los datos de la imagen (pixeles)
+
+    // Obtener el color del pixel de inicio
+    const targetColor = [
+      data[(startY * canvas.width + startX) * 4],
+      data[(startY * canvas.width + startX) * 4 + 1],
+      data[(startY * canvas.width + startX) * 4 + 2],
+      data[(startY * canvas.width + startX) * 4 + 3],
+    ];
+
+    // Verificar si el color del pixel de inicio es igual al color de relleno
+    if (colorsMatch(targetColor, fillColor)) return; // No hacer nada si son iguales
+
+    const stack = [[startX, startY]]; // Pila para almacenar las coordenadas de los píxeles a rellenar
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Algoritmo de relleno de área (flood fill)
+    while (stack.length) {
+      const [x, y] = stack.pop(); // Obtener las coordenadas del pixel actual
+      const pixelPos = (y * width + x) * 4; // Calcular la posición del pixel en el array de datos
+
+      // Verificar si las coordenadas están dentro de los límites del canvas y si el color del pixel es igual al color de inicio
+      if (
+        // Si no cumple alguna de las condiciones, continuar con la siguiente iteración
+        x < 0 ||
+        x >= width ||
+        y < 0 ||
+        y >= height ||
+        !colorsMatch(
+          [
+            data[pixelPos],
+            data[pixelPos + 1],
+            data[pixelPos + 2],
+            data[pixelPos + 3],
+          ],
+          targetColor
+        )
+      ) {
+        continue;
+      }
+
+      // Cambiar el color del pixel actual al color de relleno
+      data[pixelPos] = fillColor[0];
+      data[pixelPos + 1] = fillColor[1];
+      data[pixelPos + 2] = fillColor[2];
+      data[pixelPos + 3] = fillColor[3];
+
+      // Agregar las coordenadas de los píxeles adyacentes a la pila para rellenarlos en la siguiente iteración
+      stack.push([x + 1, y]);
+      stack.push([x - 1, y]);
+      stack.push([x, y + 1]);
+      stack.push([x, y - 1]);
+    }
+
+    // Actualizar la imagen del canvas con los datos modificados
+    ctx.putImageData(imageData, 0, 0);
+
+    // Limpiar los redos
+    setRedos([]);
+  };
+
+  // funciones ayuda para el fillDrawing
+  const colorsMatch = (color1, color2) => {
+    return (
+      color1[0] === color2[0] &&
+      color1[1] === color2[1] &&
+      color1[2] === color2[2] &&
+      color1[3] === color2[3]
+    );
   };
 
   // Adelante y atras
@@ -358,9 +447,12 @@ export const CanvasProvider = ({ children }) => {
         stopDrawing,
 
         handleChangeColor,
+        selectedColor,
+        setSelectedColor,
         clearCanvas,
         handleChangeStrokeWidth,
         handleTransparency,
+        handlePicker,
 
         handleUndo,
         handleRedo,
