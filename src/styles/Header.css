@@ -1,43 +1,40 @@
 .header {
   width: 100%;
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-radius: 5px 5px 0 0;
+  padding: var(--padding-xs);
   background-color: var(--header-background);
-  border: var(--border-width) var(--border-style) var(--header-border);
+  border-radius: 5px 5px 0 0;
+  border: var(--border-width) var(--border-style) var(--border-color);
+  position: relative;
 
   .header-buttons {
     display: flex;
-    gap: 5px;
+    gap: var(--spacing-xxs);
+    flex-grow: 1;
 
-    .upload-button {
+    .header-button {
       display: flex;
       justify-content: center;
       align-items: center;
-
       width: 42px;
       height: 42px;
-
       color: var(--button-text);
-      background-color: var(--button-primary);
+      background-color: transparent;
       transition: background-color 0.3s;
-
       border-radius: 5px;
-      border: var(--border-width) var(--border-style) var(--header-border);
-
+      border: none;
       cursor: pointer;
-      
       padding: 0;
 
       &:hover {
-        background-color: var(--sketch-secondary);
+        background-color: var(--button-hover);
       }
 
       &:active {
-        background-color: var(--sketch-accent);
+        background-color: var(--button-accent);
+        color: var(--button-text-accent);
+        border-color: var(--button-text-accent);
       }
 
       &:focus {
@@ -46,35 +43,45 @@
 
       &:disabled {
         background-color: var(--button-disabled);
+        color: var(--button-text-disabled);
         cursor: not-allowed;
       }
+    }
+
+    .theme-button {
+      margin-left: auto;
+
+      .header-button-icon {
+        transition: transform 0.3s ease-out;
+      }
+
+      &:hover .header-button-icon {
+        transform: rotate(25deg);
+      }
+    }
+  }
+
+  .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: var(--font-size-xl);
+    margin: 0;
+    font-weight: bolder;
+
+    span {
+      color: var(--header-span);
     }
   }
 }
 
-.title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--header-text);
-  span {
-    color: var(--sketch-accent);
-  }
-}
-
 @media (max-width: 900px) {
-  .header {
-    padding: 10px;
-  }
-
   .title {
-    font-size: 20px;
+    font-size: var(--font-size-l);
   }
 
-  label {
+  .header-button {
     width: 32px;
     height: 32px;
   }

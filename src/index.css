@@ -9,106 +9,157 @@ html {
 
 :root {
   /* Colores base */
-  --sketch-primary: #be9f78; /* Beige cálido */
-  --sketch-secondary: #f3cd7e; /* Amarillo suave */
-  --sketch-dark: #3b0a0a; /* Rojo oscuro profundo */
-  --sketch-neutral: #faf4f1; /* Crema muy claro */
-  --sketch-accent: #b52e3b; /* Rojo vino intenso */
+  --color-primary-a0: #ffffff;
+  --color-primary-a10: #cec3d5;
+  --color-primary-a20: #9f8aab;
+  --color-primary-a30: #725483;
+  --color-primary-a50: #45215d;
+  --color-primary-a60: #351b46;
+  --color-primary-a70: #261530;
+  --color-primary-a80: #170d1c;
+  --color-primary-a90: #000000;
 
-  /* Modo claro */
-  --sketch-background-light: #ffffff; /* Blanco puro */
-  --sketch-text-light: #4a0000; /* Rojo oscuro para mejor contraste en texto claro */
-
-  /* Modo oscuro */
-  --sketch-background-dark: #2b2b2b; /* Gris muy oscuro, casi negro */
-  --sketch-text-dark: #fdf3e3; /* Crema clara para buen contraste con el fondo oscuro */
-
-  /* Componente Toolbar */
-  --toolbar-background: var(--sketch-neutral);
-  --toolbar-icon: var(--sketch-neutral);
-  --toolbar-icon-active: var(--sketch-accent);
-  --toolbar-border: var(--sketch-dark);
-
-  /* Componente Actions */
-  --actions-background: var(--sketch-neutral);
-  --actions-icon: #ffffff;
-  --actions-icon-transparent: #ffffff80;
-  --actions-slider: var(--sketch-accent);
-  --actions-slider-hover: var(--sketch-secondary);
-  --actions-border: var(--sketch-dark);
-
-  /* Componente Colors */
-  --colors-background: var(--sketch-neutral);
-  --colors-border: var(--sketch-dark);
-
-  /* Componente Header */
-  --header-background: var(--sketch-neutral);
-  --header-text: var(--sketch-text-light);
-  --header-border: var(--sketch-dark);
-
-  /* Componente Button */
-  --button-primary: var(--sketch-accent);
-  --button-secondary: var(--sketch-secondary);
-  --button-text: #ffffff; /* Blanco puro para botones */
-  --button-disabled: #b8a098;
-  --button-border: var(--sketch-dark);
-
-  /* Componente Canvas */
-  --canvas-background: #ffffff;
-  --canvas-container-background: var(--sketch-neutral);
-  --canvas-border: var(--sketch-dark);
-
-  /* Propiedades de borde comunes */
-  --border-width: 2px;
+  /* Border */
+  --border-width: 1px;
   --border-style: solid;
 
-  /* Gradiente de fondo */
-  --gradient-start: #be9f78;
-  --gradient-end: #f3cd7e;
+  /* Border radius */
+  --border-radius: 4px;
+
+  /* Box shadow */
+  --box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 24px;
+  --spacing-l: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 64px;
+  --spacing-xxxl: 96px;
+
+  /* Padding */
+  --padding-xxs: 4px;
+  --padding-xs: 8px;
+  --padding-s: 16px;
+  --padding-m: 24px;
+  --padding-l: 32px;
+  --padding-xl: 48px;
+  --padding-xxl: 64px;
+  --padding-xxxl: 96px;
+
+  /* Font size */
+  --font-size-xxs: 12px;
+  --font-size-xs: 14px;
+  --font-size-s: 16px;
+  --font-size-m: 20px;
+  --font-size-l: 24px;
+  --font-size-xl: 32px;
+  --font-size-xxl: 48px;
+  --font-size-xxxl: 64px;
+}
+
+[data-theme="light"] {
+  /* Background */
+  --background-gradient-start: #ffffff;
+  --background-gradient-end: #f0f0f0;
+
+  /* Text */
+  --text-color: var(--color-primary-a80);
+
+  /* Border */
+  --border-color: var(--color-primary-a80);
+
+  /* Actions */
+  --actions-container: var(--color-primary-a10);
+  --actions-icon: var(--color-primary-a80);
+  --actions-slider: var(--color-primary-a20);
+  --actions-icon-transparency: rgba(23, 13, 28, 0.5);
+  --actions-input: var(--color-primary-a80);
+  --actions-input-thumb: var(--color-primary-a80);
+
+  /* Button */
+  --button-text: var(--color-primary-a80);
+  --button-text-accent: var(--color-primary-a0);
+  --button-text-disabled: var(--color-primary-a50);
+  --button-color: var(--color-primary-a20);
+  --button-hover: var(--color-primary-a30);
+  --button-accent: var(--color-primary-a50);
+  --button-disabled: var(--color-primary-a0);
+
+  /* Canvas */
+  --canvas-container: var(--color-primary-a10);
+  --canvas-background: var(--color-primary-a0);
+
+  /* Colors */
+  --colors-background: var(--color-primary-a10);
+  
+  /* Header */
+  --header-background: var(--color-primary-a0);
+  --header-span: var(--color-primary-a30);
+
+  /* Toolbar */
+  --toolbar-background: var(--color-primary-a0);
 }
 
 [data-theme="dark"] {
-  --sketch-background-light: var(--sketch-background-dark);
-  --sketch-text-light: var(--sketch-text-dark);
+  /* Background */
+  --background-gradient-start: #1e1e1e;
+  --background-gradient-end: #2e2e2e;
 
-  --toolbar-background: #3b0a0a; /* Rojo oscuro para mejor contraste en modo oscuro */
-  --toolbar-icon: var(--sketch-neutral);
-  --toolbar-border: var(--sketch-neutral);
+  /* Text */
+  --text-color: var(--color-primary-a0);
 
-  --actions-background: #3b0a0a;
-  --actions-border: var(--sketch-neutral);
+  /* Border */
+  --border-color: var(--color-primary-a0);
 
-  --colors-background: #3b0a0a;
-  --colors-border: var(--sketch-neutral);
+  /* Actions */
+  --actions-container: var(--color-primary-a30);
+  --actions-icon: var(--color-primary-a0);
+  --actions-slider: var(--color-primary-a50);
+  --actions-icon-transparency: rgba(255, 255, 255, 0.5);
+  --actions-input: var(--color-primary-a0);
+  --actions-input-thumb: var(--color-primary-a0);
 
-  --header-background: #3b0a0a;
-  --header-text: var(--sketch-text-light);
-  --header-border: var(--sketch-neutral);
+  /* Button */
+  --button-text: var(--color-primary-a0);
+  --button-text-accent: var(--color-primary-a50);
+  --button-text-disabled: var(--color-primary-a20);
+  --button-color: var(--color-primary-a50);
+  --button-hover: var(--color-primary-a60);
+  --button-accent: var(--color-primary-a10);
+  --button-disabled: var(--color-primary-a80);
 
-  --button-border: var(--sketch-neutral);
-  --button-text: #fdf3e3;
+  /* Canvas */
+  --canvas-container: var(--color-primary-a30);
+  --canvas-background: var(--color-primary-a0);
 
-  --canvas-border: var(--sketch-neutral);
-  --canvas-container-background: #180404;
+  /* Colors */
+  --colors-background: var(--color-primary-a30);
 
-  --gradient-start: #3b0a0a;
-  --gradient-end: #2b2b2b;
+  /* Header */
+  --header-background: var(--color-primary-a90);
+  --header-span: var(--color-primary-a10);
+
+  /* Toolbar */
+  --toolbar-background: var(--color-primary-a30);
 }
 
 body {
   background: linear-gradient(
     135deg,
-    var(--gradient-start) 0%,
-    var(--gradient-end) 100%
+    var(--background-gradient-start) 0%,
+    var(--background-gradient-end) 100%
   );
   background-attachment: fixed;
 
-  color: var(--sketch-text-light);
+  color: var(--text-color);
 
-  transition: background-color 0.3s, color 0.3s;
+  transition: all 0.3 ease;
 
   margin: 0;
-  padding: 0;
+  padding-inline: var(--spacing-xs);
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

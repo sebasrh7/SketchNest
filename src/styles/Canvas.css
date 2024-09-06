@@ -5,12 +5,12 @@
 
   .canvas-container {
     height: 100%;
-    padding: 10px;
-    background-color: var(--canvas-container-background);
+    padding: var(--padding-xs);
+    background-color: var(--canvas-container);
     border-radius: 0 0 5px 5px;
-    border-left: var(--border-width) var(--border-style) var(--canvas-border);
-    border-right: var(--border-width) var(--border-style) var(--canvas-border);
-    border-bottom: var(--border-width) var(--border-style) var(--canvas-border);
+    border-left: var(--border-width) var(--border-style) var(--border-color);
+    border-right: var(--border-width) var(--border-style) var(--border-color);
+    border-bottom: var(--border-width) var(--border-style) var(--border-color);
 
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@
 
     canvas {
       background-color: var(--canvas-background);
-      border: var(--border-width) var(--border-style) var(--canvas-border);
+      border: var(--border-width) var(--border-style) var(--border-color);
       -ms-touch-action: none;
       touch-action: none;
     }

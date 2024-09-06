@@ -7,22 +7,30 @@ button {
   height: 42px;
 
   color: var(--button-text);
-  background-color: var(--button-primary);
+  background-color: var(--button-color);
   transition: background-color 0.3s;
 
   border-radius: 5px;
-  border: var(--border-width) var(--border-style) var(--button-border);
+  border: var(--border-width) var(--border-style) var(--border-color);
 
   cursor: pointer;
 
   padding: 0;
 
   &:hover {
-    background-color: var(--sketch-secondary);
+    background-color: var(--button-hover);
+  }
+
+  &.active {
+    background-color: var(--button-accent);
+    color: var(--button-text-accent);
+    border-color: var(--button-text-accent);
   }
 
   &:active {
-    background-color: var(--sketch-accent);
+    background-color: var(--button-accent);
+    color: var(--button-text-accent);
+    border-color: var(--button-text-accent);
   }
 
   &:focus {
@@ -31,6 +39,7 @@ button {
 
   &:disabled {
     background-color: var(--button-disabled);
+    color: var(--button-text-disabled);
     cursor: not-allowed;
   }
 }

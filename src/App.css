@@ -3,11 +3,10 @@
   grid-template-areas:
     "colors canvas toolbar"
     "actions actions actions";
-  grid-template-columns: 1fr 3fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr 2fr 1fr;
+  place-content: center;
 
-  align-content: center;
-  justify-content: center;
+  gap: var(--spacing-s);
 
   height: 100dvh;
 }
@@ -28,7 +27,7 @@
   grid-area: actions;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .app {
     grid-template-areas:
       "canvas canvas canvas"
