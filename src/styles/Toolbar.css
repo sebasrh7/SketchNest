@@ -11,7 +11,8 @@
 
     padding: 10px;
     border-radius: 5px;
-    background-color: var(--crimson-red);
+    background-color: var(--toolbar-background);
+    border: var(--border-width) var(--border-style) var(--toolbar-border);
   }
 }
 

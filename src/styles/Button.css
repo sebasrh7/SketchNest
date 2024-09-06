@@ -6,23 +6,23 @@ button {
   width: 42px;
   height: 42px;
 
-  color: var(--pure-white);
-  background-color: var(--coral-pink);
+  color: var(--button-text);
+  background-color: var(--button-primary);
   transition: background-color 0.3s;
 
   border-radius: 5px;
-  border: 2px solid var(--pure-white);
+  border: var(--border-width) var(--border-style) var(--button-border);
 
   cursor: pointer;
 
   padding: 0;
 
   &:hover {
-    background-color: var(--dark-coral-pink);
+    background-color: var(--sketch-secondary);
   }
 
   &:active {
-    background-color: var(--dark-coral-pink);
+    background-color: var(--sketch-accent);
   }
 
   &:focus {
@@ -30,7 +30,7 @@ button {
   }
 
   &:disabled {
-    background-color: var(--light-gray);
+    background-color: var(--button-disabled);
     cursor: not-allowed;
   }
 }

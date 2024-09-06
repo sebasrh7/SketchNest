@@ -1,44 +1,114 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-
-/* Variables CSS para los temas */
 :root {
-  --background-color: #f0f0f0;
-  --text-color: #000000;
-  --canvas-background: #ffffff;
-  --work-area-background: #ab190c;
+  /* Colores base */
+  --sketch-primary: #be9f78; /* Beige cálido */
+  --sketch-secondary: #f3cd7e; /* Amarillo suave */
+  --sketch-dark: #3b0a0a; /* Rojo oscuro profundo */
+  --sketch-neutral: #faf4f1; /* Crema muy claro */
+  --sketch-accent: #b52e3b; /* Rojo vino intenso */
 
-  --deep-ocean-blue: #0c1a26;
-  --teal-green: #048c7f;
-  --crimson-red: #f22613;
-  --coral-pink: #f2594b;
-  --pure-white: #f2f2f2;
+  /* Modo claro */
+  --sketch-background-light: #ffffff; /* Blanco puro */
+  --sketch-text-light: #4a0000; /* Rojo oscuro para mejor contraste en texto claro */
+
+  /* Modo oscuro */
+  --sketch-background-dark: #2b2b2b; /* Gris muy oscuro, casi negro */
+  --sketch-text-dark: #fdf3e3; /* Crema clara para buen contraste con el fondo oscuro */
+
+  /* Componente Toolbar */
+  --toolbar-background: var(--sketch-neutral);
+  --toolbar-icon: var(--sketch-neutral);
+  --toolbar-icon-active: var(--sketch-accent);
+  --toolbar-border: var(--sketch-dark);
+
+  /* Componente Actions */
+  --actions-background: var(--sketch-neutral);
+  --actions-icon: #ffffff;
+  --actions-icon-transparent: #ffffff80;
+  --actions-slider: var(--sketch-accent);
+  --actions-slider-hover: var(--sketch-secondary);
+  --actions-border: var(--sketch-dark);
+
+  /* Componente Colors */
+  --colors-background: var(--sketch-neutral);
+  --colors-border: var(--sketch-dark);
+
+  /* Componente Header */
+  --header-background: var(--sketch-neutral);
+  --header-text: var(--sketch-text-light);
+  --header-border: var(--sketch-dark);
+
+  /* Componente Button */
+  --button-primary: var(--sketch-accent);
+  --button-secondary: var(--sketch-secondary);
+  --button-text: #ffffff; /* Blanco puro para botones */
+  --button-disabled: #b8a098;
+  --button-border: var(--sketch-dark);
+
+  /* Componente Canvas */
+  --canvas-background: #ffffff;
+  --canvas-container-background: var(--sketch-neutral);
+  --canvas-border: var(--sketch-dark);
+
+  /* Propiedades de borde comunes */
+  --border-width: 2px;
+  --border-style: solid;
+
+  /* Gradiente de fondo */
+  --gradient-start: #be9f78;
+  --gradient-end: #f3cd7e;
 }
 
 [data-theme="dark"] {
-  --background-color: #121212;
-  --text-color: #e0e0e0;
-  --canvas-background: #ffffff;
-  --work-area-background: #a12626;
+  --sketch-background-light: var(--sketch-background-dark);
+  --sketch-text-light: var(--sketch-text-dark);
 
-  --deep-ocean-blue: #1b2a3a;
-  --teal-green: #00adb5;
-  --crimson-red: #ff3e3e;
-  --coral-pink: #ff6b6b;
-  --pure-white: #f2f2f2;
+  --toolbar-background: #3b0a0a; /* Rojo oscuro para mejor contraste en modo oscuro */
+  --toolbar-icon: var(--sketch-neutral);
+  --toolbar-border: var(--sketch-neutral);
+
+  --actions-background: #3b0a0a;
+  --actions-border: var(--sketch-neutral);
+
+  --colors-background: #3b0a0a;
+  --colors-border: var(--sketch-neutral);
+
+  --header-background: #3b0a0a;
+  --header-text: var(--sketch-text-light);
+  --header-border: var(--sketch-neutral);
+
+  --button-border: var(--sketch-neutral);
+  --button-text: #fdf3e3;
+
+  --canvas-border: var(--sketch-neutral);
+  --canvas-container-background: #180404;
+
+  --gradient-start: #3b0a0a;
+  --gradient-end: #2b2b2b;
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start) 0%,
+    var(--gradient-end) 100%
+  );
+  background-attachment: fixed;
+
+  color: var(--sketch-text-light);
+
   transition: background-color 0.3s, color 0.3s;
 
   margin: 0;
+  padding: 0;
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

@@ -17,6 +17,7 @@ const Toolbar = () => {
           <Button
             key={tool.id}
             id={tool.id}
+            className="tool"
             icon={tool.icon}
             onClick={() => {
               if (tool.id === "CLEAR") {

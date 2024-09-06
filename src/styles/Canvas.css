@@ -1,22 +1,24 @@
 .canvas {
   display: flex;
   flex-direction: column;
-
   border-radius: 5px;
-
-  background-color: var(--work-area-background);
 
   .canvas-container {
     height: 100%;
     padding: 10px;
+    background-color: var(--canvas-container-background);
     border-radius: 0 0 5px 5px;
+    border-left: var(--border-width) var(--border-style) var(--canvas-border);
+    border-right: var(--border-width) var(--border-style) var(--canvas-border);
+    border-bottom: var(--border-width) var(--border-style) var(--canvas-border);
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     canvas {
-      background-color: rgb(255, 255, 255);
+      background-color: var(--canvas-background);
+      border: var(--border-width) var(--border-style) var(--canvas-border);
       -ms-touch-action: none;
       touch-action: none;
     }
