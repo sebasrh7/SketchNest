@@ -1,5 +1,4 @@
 .header {
-  width: 100%;
   display: flex;
   align-items: center;
   padding: var(--padding-xs);
@@ -7,6 +6,7 @@
   border-radius: 5px 5px 0 0;
   border: var(--border-width) var(--border-style) var(--border-color);
   position: relative;
+  max-width: 100%;
 
   .header-buttons {
     display: flex;
@@ -66,7 +66,7 @@
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-l);
     margin: 0;
     font-weight: bolder;
 
@@ -76,13 +76,21 @@
   }
 }
 
-@media (max-width: 900px) {
-  .title {
-    font-size: var(--font-size-l);
-  }
+@media (max-width: 992px) {
+  .header {
+    .title {
+      font-size: var(--font-size-m);
+    }
+    .header-buttons {
+      .header-button {
+        width: 32px;
+        height: 32px;
 
-  .header-button {
-    width: 32px;
-    height: 32px;
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
   }
 }

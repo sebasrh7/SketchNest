@@ -3,20 +3,19 @@
   grid-template-areas:
     "colors canvas toolbar"
     "actions actions actions";
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+
   place-content: center;
-
   gap: var(--spacing-s);
-
   height: 100dvh;
-}
-
-.colors {
-  grid-area: colors;
 }
 
 .canvas {
   grid-area: canvas;
+}
+
+.colors {
+  grid-area: colors;
 }
 
 .toolbar {
@@ -27,30 +26,23 @@
   grid-area: actions;
 }
 
-@media (max-width: 768px) {
+.controls {
+  display: contents;
+}
+
+@media (max-width: 992px) {
   .app {
-    grid-template-areas:
-      "canvas canvas canvas"
-      "colors actions toolbar";
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
 
-    .colors {
-      display: flex;
-      justify-content: start;
-      align-items: start;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      align-items: start;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: end;
-      align-items: start;
-    }
+  .controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+    max-width: 100%;
   }
 }

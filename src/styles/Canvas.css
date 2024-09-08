@@ -1,10 +1,14 @@
 .canvas {
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  max-width: 100%;
+  margin: 0 auto;
 
   .canvas-container {
     height: 100%;
+    max-width: 100%;
+    display: flex;
+    margin: 0 auto;
     padding: var(--padding-xs);
     background-color: var(--canvas-container);
     border-radius: 0 0 5px 5px;
@@ -12,15 +16,20 @@
     border-right: var(--border-width) var(--border-style) var(--border-color);
     border-bottom: var(--border-width) var(--border-style) var(--border-color);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     canvas {
       background-color: var(--canvas-background);
       border: var(--border-width) var(--border-style) var(--border-color);
       -ms-touch-action: none;
       touch-action: none;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .canvas {
+    .canvas-container {
+      padding: var(--padding-xxs);
+      overflow-x: scroll;
     }
   }
 }
