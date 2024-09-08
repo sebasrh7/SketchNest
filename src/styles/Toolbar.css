@@ -7,19 +7,36 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
-    grid-gap: 5px;
+    grid-gap: var(--spacing-xxs);
 
-    padding: 10px;
+    padding: var(--padding-xs);
     border-radius: 5px;
-    background-color: var(--crimson-red);
+    background-color: var(--toolbar-background);
+    border: var(--border-width) var(--border-style) var(--border-color);
   }
 }
 
-@media (max-width: 900px) {
+.dropdown-menu {
+  display: none;
+}
+
+@media (max-width: 992px) {
   .toolbar {
     .toolbar-container {
-      display: flex;
-      flex-direction: column;
+      display: none;
     }
+  }
+
+  .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-content {
+    display: none;
+    flex-direction: column;
+  }
+
+  .dropdown-content.open {
+    display: block;
   }
 }

@@ -23,6 +23,7 @@ export const CanvasProvider = ({ children }) => {
   // ESTADOS
   const [isDrawing, setIsDrawing] = useState(false);
   const [mode, setMode] = useState(MODES.PEN);
+  const [thickness, setThickness] = useState(THICKNESS[0]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [lastX, setLastX] = useState(0);
@@ -44,7 +45,7 @@ export const CanvasProvider = ({ children }) => {
     const context = canvas.getContext("2d", { willReadFrequently: true });
     context.lineJoin = "round";
     context.lineCap = "round";
-    context.lineWidth = THICKNESS[0];
+    context.lineWidth = thickness;
 
     ctxRef.current = context;
   }, []);
@@ -253,6 +254,7 @@ export const CanvasProvider = ({ children }) => {
   // Cambiar el grosor del trazo
   const handleChangeStrokeWidth = (width) => {
     ctxRef.current.lineWidth = width;
+    setThickness(width);
   };
 
   // Limpiar el canvas
@@ -441,6 +443,7 @@ export const CanvasProvider = ({ children }) => {
 
         setMode, // Exponer setMode
         mode, // Exponer mode si es necesario
+        thickness, // Exponer thickness si es necesario
 
         startDrawing,
         draw,

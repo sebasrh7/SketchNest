@@ -6,17 +6,17 @@ import Colors from "./components/Colors/Colors";
 import { CanvasProvider } from "./contexts/CanvasContext";
 import "./App.css";
 
-function App() {
+export default function App() {
   return (
     <CanvasProvider>
       <main className="app">
-        <Colors />
         <Canvas />
-        <Toolbar />
-        <Actions />
+        <div className="controls">
+          <Colors />
+          <Toolbar />
+          <Actions />
+        </div>
       </main>
     </CanvasProvider>
   );
 }
-
-export default App;

@@ -1,44 +1,167 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-
-/* Variables CSS para los temas */
 :root {
-  --background-color: #f0f0f0;
-  --text-color: #000000;
-  --canvas-background: #ffffff;
-  --work-area-background: #ab190c;
+  /* Colores base */
+  --color-primary-a0: #ffffff;
+  --color-primary-a10: #cec3d5;
+  --color-primary-a20: #9f8aab;
+  --color-primary-a30: #725483;
+  --color-primary-a50: #45215d;
+  --color-primary-a60: #351b46;
+  --color-primary-a70: #261530;
+  --color-primary-a80: #170d1c;
+  --color-primary-a90: #000000;
 
-  --deep-ocean-blue: #0c1a26;
-  --teal-green: #048c7f;
-  --crimson-red: #f22613;
-  --coral-pink: #f2594b;
-  --pure-white: #f2f2f2;
+  /* Border */
+  --border-width: 1px;
+  --border-style: solid;
+
+  /* Border radius */
+  --border-radius: 4px;
+
+  /* Box shadow */
+  --box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-s: 16px;
+  --spacing-m: 24px;
+  --spacing-l: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 64px;
+  --spacing-xxxl: 96px;
+
+  /* Padding */
+  --padding-xxs: 4px;
+  --padding-xs: 8px;
+  --padding-s: 16px;
+  --padding-m: 24px;
+  --padding-l: 32px;
+  --padding-xl: 48px;
+  --padding-xxl: 64px;
+  --padding-xxxl: 96px;
+
+  /* Font size */
+  --font-size-xxs: 12px;
+  --font-size-xs: 14px;
+  --font-size-s: 16px;
+  --font-size-m: 20px;
+  --font-size-l: 24px;
+  --font-size-xl: 32px;
+  --font-size-xxl: 48px;
+  --font-size-xxxl: 64px;
+}
+
+[data-theme="light"] {
+  /* Background */
+  --background-gradient-start: #dfe9f3;
+  --background-gradient-end: #fff;
+
+  /* Text */
+  --text-color: var(--color-primary-a80);
+
+  /* Border */
+  --border-color: var(--color-primary-a80);
+
+  /* Actions */
+  --actions-container: var(--color-primary-a10);
+  --actions-icon: var(--color-primary-a80);
+  --actions-slider: var(--color-primary-a20);
+  --actions-icon-transparency: rgba(23, 13, 28, 0.5);
+  --actions-input: var(--color-primary-a80);
+  --actions-input-thumb: var(--color-primary-a80);
+
+  /* Button */
+  --button-text: var(--color-primary-a80);
+  --button-text-accent: var(--color-primary-a0);
+  --button-text-disabled: var(--color-primary-a50);
+  --button-color: var(--color-primary-a20);
+  --button-hover: var(--color-primary-a30);
+  --button-accent: var(--color-primary-a50);
+  --button-disabled: var(--color-primary-a0);
+
+  /* Canvas */
+  --canvas-container: var(--color-primary-a10);
+  --canvas-background: var(--color-primary-a0);
+
+  /* Colors */
+  --colors-background: var(--color-primary-a10);
+
+  /* Header */
+  --header-background: var(--color-primary-a0);
+  --header-span: var(--color-primary-a30);
+
+  /* Toolbar */
+  --toolbar-background: var(--color-primary-a0);
 }
 
 [data-theme="dark"] {
-  --background-color: #121212;
-  --text-color: #e0e0e0;
-  --canvas-background: #ffffff;
-  --work-area-background: #a12626;
+  /* Background */
+  --background-gradient-start: #000;
+  --background-gradient-end: #2c3e50;
 
-  --deep-ocean-blue: #1b2a3a;
-  --teal-green: #00adb5;
-  --crimson-red: #ff3e3e;
-  --coral-pink: #ff6b6b;
-  --pure-white: #f2f2f2;
+  /* Text */
+  --text-color: var(--color-primary-a0);
+
+  /* Border */
+  --border-color: var(--color-primary-a0);
+
+  /* Actions */
+  --actions-container: var(--color-primary-a30);
+  --actions-icon: var(--color-primary-a0);
+  --actions-slider: var(--color-primary-a50);
+  --actions-icon-transparency: rgba(255, 255, 255, 0.5);
+  --actions-input: var(--color-primary-a0);
+  --actions-input-thumb: var(--color-primary-a0);
+
+  /* Button */
+  --button-text: var(--color-primary-a0);
+  --button-text-accent: var(--color-primary-a50);
+  --button-text-disabled: var(--color-primary-a20);
+  --button-color: var(--color-primary-a50);
+  --button-hover: var(--color-primary-a60);
+  --button-accent: var(--color-primary-a10);
+  --button-disabled: var(--color-primary-a80);
+
+  /* Canvas */
+  --canvas-container: var(--color-primary-a30);
+  --canvas-background: var(--color-primary-a0);
+
+  /* Colors */
+  --colors-background: var(--color-primary-a30);
+
+  /* Header */
+  --header-background: var(--color-primary-a90);
+  --header-span: var(--color-primary-a10);
+
+  /* Toolbar */
+  --toolbar-background: var(--color-primary-a30);
 }
 
 body {
-  background-color: var(--background-color);
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>'),
+    linear-gradient(
+      to right,
+      var(--background-gradient-start) 0%,
+      var(--background-gradient-end) 100%
+    );
+  background-size: cover, 100%;
+  background-attachment: fixed;
+
   color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
+
+  transition: all 0.3 ease;
 
   margin: 0;
+  padding-inline: var(--spacing-xs);
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

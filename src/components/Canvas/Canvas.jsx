@@ -13,8 +13,8 @@ const Canvas = () => {
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
-          width={560}
-          height={420}
+          width={770}
+          height={490}
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={stopDrawing}

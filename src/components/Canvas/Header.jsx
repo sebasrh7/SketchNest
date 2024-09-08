@@ -28,10 +28,10 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-buttons">
-        <button onClick={downloadDrawing}>
+        <button onClick={downloadDrawing} className="header-button">
           <Download />
         </button>
-        <label className="upload-button">
+        <label className="header-button">
           <Upload />
           <input
             type="file"
@@ -40,15 +40,18 @@ const Header = () => {
             hidden
           />
         </label>
+        <button onClick={toggleTheme} className="header-button theme-button">
+          {theme === "light" ? (
+            <Moon className="header-button-icon" />
+          ) : (
+            <Sun className="header-button-icon" />
+          )}
+        </button>
       </div>
 
       <h1 className="title">
         Sketch<span>Nest</span>
       </h1>
-
-      <button onClick={toggleTheme} className="theme-toggle">
-        {theme === "light" ? <Moon /> : <Sun />}
-      </button>
     </header>
   );
 };

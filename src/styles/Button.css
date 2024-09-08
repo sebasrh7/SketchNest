@@ -6,23 +6,31 @@ button {
   width: 42px;
   height: 42px;
 
-  color: var(--pure-white);
-  background-color: var(--coral-pink);
+  color: var(--button-text);
+  background-color: var(--button-color);
   transition: background-color 0.3s;
 
   border-radius: 5px;
-  border: 2px solid var(--pure-white);
+  border: var(--border-width) var(--border-style) var(--border-color);
 
   cursor: pointer;
 
   padding: 0;
 
   &:hover {
-    background-color: var(--dark-coral-pink);
+    background-color: var(--button-hover);
+  }
+
+  &.active {
+    background-color: var(--button-accent);
+    color: var(--button-text-accent);
+    border-color: var(--button-text-accent);
   }
 
   &:active {
-    background-color: var(--dark-coral-pink);
+    background-color: var(--button-accent);
+    color: var(--button-text-accent);
+    border-color: var(--button-text-accent);
   }
 
   &:focus {
@@ -30,14 +38,20 @@ button {
   }
 
   &:disabled {
-    background-color: var(--light-gray);
+    background-color: var(--button-disabled);
+    color: var(--button-text-disabled);
     cursor: not-allowed;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
   button {
     width: 32px;
     height: 32px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 }

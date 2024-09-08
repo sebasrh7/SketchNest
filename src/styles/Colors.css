@@ -7,15 +7,30 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 10px;  
+    gap: var(--spacing-xxs);
+    padding: var(--padding-xs);
     border-radius: 5px;
-    background-color: var(--crimson-red);
+    background-color: var(--colors-background);
+    border: var(--border-width) var(--border-style) var(--border-color);
+
+    h2 {
+      font-size: var(--font-size-s);
+      margin: 0;
+      height: 42px;
+      width: 100%;
+      background-color: var(--header-background);
+      border: var(--border-width) var(--border-style) var(--border-color);
+      border-radius: 5px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     .palette-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      border: 2px solid var(--pure-white);
+      grid-template-columns: repeat(4, 1fr);
+      border: var(--border-width) var(--border-style) var(--border-color);
 
       .color-swatch {
         width: 24px;
@@ -35,7 +50,7 @@
 }
 
 [type="color"] {
-  border: 2px solid var(--pure-white);
+  border: var(--border-width) var(--border-style) var(--border-color);
   border-radius: 5px;
   padding: 0;
   height: 42px;
@@ -48,47 +63,41 @@
 
   &::-webkit-color-swatch {
     border: 0;
-    border-radius: 2px;
+    border-radius: inherit;
   }
 
   &::-moz-color-swatch {
     border: 0;
-    border-radius: 2px;
+    border-radius: inherit;
   }
 }
 
-h2 {
-  font-size: 20px;
-  margin: 0;
-  height: 42px;
-  width: 100%;
-
-  color: var(--pure-white);
-
-  border: 2px solid var(--pure-white);
-  border-radius: 5px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 992px) {
   .colors {
     .colors-container {
+      padding: var(--padding-xxs);
+      flex-direction: row;
+      
+      h2 {
+        display: none;
+      }
       
       .palette-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(10, 1fr);
+        gap: var(--spacing-xxs);
+        border: none;
+
+        .color-swatch {
+          border: var(--border-width) var(--border-style) var(--border-color);
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }
 
-  h2 {
-    font-size: 16px;
-  }
-
   [type="color"] {
-    height: 32px;
+    width: 28px;
+    height: 44px;
   }
-
 }
