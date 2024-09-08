@@ -101,6 +101,10 @@ html {
 
   /* Toolbar */
   --toolbar-background: var(--color-primary-a0);
+
+  /* Scrollbar */
+  --scrollbar-track: var(--color-primary-a20);
+  --scrollbar-thumb: var(--color-primary-a50);
 }
 
 [data-theme="dark"] {
@@ -144,6 +148,10 @@ html {
 
   /* Toolbar */
   --toolbar-background: var(--color-primary-a30);
+
+  /* Scrollbar */
+  --scrollbar-track: var(--color-primary-a50);
+  --scrollbar-thumb: var(--color-primary-a10);
 }
 
 body {

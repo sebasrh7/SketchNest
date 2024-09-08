@@ -29,9 +29,26 @@
   .canvas {
     .canvas-container {
       padding: var(--padding-xxs);
-      overflow-x: scroll;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory; 
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .canvas-container::-webkit-scrollbar {
+      height: 12px; /* Altura del scrollbar horizontal */
+    }
+
+    .canvas-container::-webkit-scrollbar-track {
+      background: var(--scrollbar-track); 
+      border-radius: var(--border-radius);
+    }
+
+    .canvas-container::-webkit-scrollbar-thumb {
+      background-color: var(
+        --scrollbar-thumb
+      ); /* Color del "dedo" del scroll */
+      border-radius: var(--border-radius);
+      border: 2px solid var(--scrollbar-track); /* Añade espacio alrededor del thumb */
     }
   }
 }
