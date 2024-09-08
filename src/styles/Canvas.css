@@ -30,6 +30,8 @@
     .canvas-container {
       padding: var(--padding-xxs);
       overflow-x: scroll;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; 
     }
   }
 }

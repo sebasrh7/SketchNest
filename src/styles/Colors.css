@@ -97,7 +97,8 @@
   }
 
   [type="color"] {
-    width: 28px;
+    width: 20px;
     height: 44px;
+    border-radius: 0;
   }
 }
