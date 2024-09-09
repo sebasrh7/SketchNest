@@ -16,31 +16,19 @@
   }
 }
 
-.dropdown-menu {
-  display: none;
-}
-
 @media (max-width: 992px) {
   .toolbar {
-    #PICKER {
-      display: none;
-    }
-
     .toolbar-container {
       display: none;
     }
   }
-
   .dropdown-menu {
     display: block;
   }
 
-  .dropdown-content {
-    display: none;
-    flex-direction: column;
-  }
-
-  .dropdown-content.open {
-    display: block;
+  .toolbar-dropdown {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: var(--spacing-xxs);
   }
 }

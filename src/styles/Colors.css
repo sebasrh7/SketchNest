@@ -83,9 +83,12 @@
       }
       
       .palette-grid {
-        grid-template-columns: repeat(10, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+        place-content: center;
+        height: 44px;
         gap: var(--spacing-xxs);
         border: none;
+        overflow: hidden;
 
         .color-swatch {
           border: var(--border-width) var(--border-style) var(--border-color);

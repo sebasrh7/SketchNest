@@ -43,15 +43,17 @@ const Actions = () => {
           <div className="transparency-circle-container">
             <span className="transparency-circle opacity-1" />
           </div>
-          <input
-            onChange={handleTransparency}
-            type="range"
-            min="0.1"
-            max="1"
-            step="0.1"
-            defaultValue="1"
-            className="action-slider"
-          />
+          <div className="slider-wrapper">
+            <input
+              onChange={handleTransparency}
+              type="range"
+              min="0.1"
+              max="1"
+              step="0.1"
+              defaultValue="1"
+              className="action-slider"
+            />
+          </div>
           <div className="transparency-circle-container">
             <span className="transparency-circle opacity-0" />
           </div>
@@ -74,58 +76,62 @@ const Actions = () => {
           </button>
         </div>
       </div>
-      
-      <DropdownMenu icon={<Settings />}>
-        <div className="thickness-buttons">
-          {THICKNESS.map((width) => (
-            <Button
-              key={width}
-              className={`thickness-button ${
-                thickness === width ? "active" : ""
-              }`}
-              onClick={() => handleChangeStrokeWidth(width)}
-            >
-              <span
-                className="thickness-circle"
-                style={{ width: `${width}px`, height: `${width}px` }}
+
+      <DropdownMenu id="actions-menu" icon={<Settings />}>
+        <div className="actions-dropdown">
+          <div className="thickness-buttons">
+            {THICKNESS.map((width) => (
+              <Button
+                key={width}
+                className={`thickness-button ${
+                  thickness === width ? "active" : ""
+                }`}
+                onClick={() => handleChangeStrokeWidth(width)}
+              >
+                <span
+                  className="thickness-circle"
+                  style={{ width: `${width}px`, height: `${width}px` }}
+                />
+              </Button>
+            ))}
+          </div>
+
+          <div className="transparency-slider">
+            <div className="transparency-circle-container">
+              <span className="transparency-circle opacity-1" />
+            </div>
+            <div className="slider-wrapper">
+              <input
+                onChange={handleTransparency}
+                type="range"
+                min="0.1"
+                max="1"
+                step="0.1"
+                defaultValue="1"
+                className="action-slider"
               />
-            </Button>
-          ))}
-        </div>
-
-        <div className="transparency-slider">
-          <div className="transparency-circle-container">
-            <span className="transparency-circle opacity-1" />
+            </div>
+            <div className="transparency-circle-container">
+              <span className="transparency-circle opacity-0" />
+            </div>
           </div>
-          <input
-            onChange={handleTransparency}
-            type="range"
-            min="0.1"
-            max="1"
-            step="0.1"
-            defaultValue="1"
-            className="action-slider"
-          />
-          <div className="transparency-circle-container">
-            <span className="transparency-circle opacity-0" />
-          </div>
-        </div>
 
-        <div className="undo-redo-buttons">
-          <button
-            className="action-button"
-            onClick={handleUndo}
-            disabled={undos.length === 0}
-          >
-            <Back />
-          </button>
-          <button
-            className="action-button"
-            onClick={handleRedo}
-            disabled={redos.length === 0}
-          >
-            <Forward />
-          </button>
+          <div className="undo-redo-buttons">
+            <button
+              className="action-button"
+              onClick={handleUndo}
+              disabled={undos.length === 0}
+            >
+              <Back />
+            </button>
+            <button
+              className="action-button"
+              onClick={handleRedo}
+              disabled={redos.length === 0}
+            >
+              <Forward />
+            </button>
+          </div>
         </div>
       </DropdownMenu>
     </aside>

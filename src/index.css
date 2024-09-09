@@ -71,6 +71,9 @@ html {
   /* Border */
   --border-color: var(--color-primary-a80);
 
+  /* Box shadow */
+  --box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
   /* Actions */
   --actions-container: var(--color-primary-a10);
   --actions-icon: var(--color-primary-a80);
@@ -102,6 +105,9 @@ html {
   /* Toolbar */
   --toolbar-background: var(--color-primary-a0);
 
+  /* Dropdown Menu */
+  --dropdown-background: var(--color-primary-a0);
+
   /* Scrollbar */
   --scrollbar-track: var(--color-primary-a20);
   --scrollbar-thumb: var(--color-primary-a50);
@@ -117,6 +123,9 @@ html {
 
   /* Border */
   --border-color: var(--color-primary-a0);
+
+  /* Box shadow */
+  --box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   /* Actions */
   --actions-container: var(--color-primary-a30);
@@ -149,6 +158,9 @@ html {
   /* Toolbar */
   --toolbar-background: var(--color-primary-a30);
 
+  /* Dropdown Menu */
+  --dropdown-background: var(--color-primary-a30);
+
   /* Scrollbar */
   --scrollbar-track: var(--color-primary-a50);
   --scrollbar-thumb: var(--color-primary-a10);
@@ -173,4 +185,5 @@ body {
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
 }
