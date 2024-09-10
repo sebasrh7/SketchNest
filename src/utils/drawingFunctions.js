@@ -112,12 +112,13 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
   const { width, height } = ctx.canvas;
   const imageData = ctx.getImageData(0, 0, width, height);
   const { data } = imageData;
+  const initialPixelIndex = pixelIndex(x, y, width);
 
   const targetColor = [
-    data[(y * width + x) * 4],
-    data[(y * width + x) * 4 + 1],
-    data[(y * width + x) * 4 + 2],
-    data[(y * width + x) * 4 + 3],
+    data[initialPixelIndex],
+    data[initialPixelIndex + 1],
+    data[initialPixelIndex + 2],
+    data[initialPixelIndex + 3],
   ];
 
   if (colorsMatch(targetColor, fillColor)) {
@@ -128,7 +129,8 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
 
   while (stack.length) {
     const [currentX, currentY] = stack.pop();
-    const pixelIndex = (currentY * width + currentX) * 4;
+
+    const currentIndex = pixelIndex(currentX, currentY, width);
 
     if (
       currentX < 0 ||
@@ -137,10 +139,10 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
       currentY >= height ||
       !colorsMatch(
         [
-          data[pixelIndex],
-          data[pixelIndex + 1],
-          data[pixelIndex + 2],
-          data[pixelIndex + 3],
+          data[currentIndex],
+          data[currentIndex + 1],
+          data[currentIndex + 2],
+          data[currentIndex + 3],
         ],
         targetColor
       )
@@ -149,10 +151,10 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
     }
 
     // Cambiar el color del pixel actual al color de relleno
-    data[pixelIndex] = fillColor[0];
-    data[pixelIndex + 1] = fillColor[1];
-    data[pixelIndex + 2] = fillColor[2];
-    data[pixelIndex + 3] = fillColor[3];
+    data[currentIndex] = fillColor[0];
+    data[currentIndex + 1] = fillColor[1];
+    data[currentIndex + 2] = fillColor[2];
+    data[currentIndex + 3] = fillColor[3];
 
     // Agregar las coordenadas de los píxeles adyacentes a la pila para rellenarlos en la siguiente iteración
     stack.push([currentX + 1, currentY]);
@@ -163,6 +165,8 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
 
   ctx.putImageData(imageData, 0, 0);
 };
+
+const pixelIndex = (x, y, width) => (Math.floor(y) * width + Math.floor(x)) * 4;
 
 const colorsMatch = (color1, color2) =>
   color1.every((value, i) => value === color2[i]);
