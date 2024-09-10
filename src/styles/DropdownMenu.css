@@ -10,8 +10,8 @@
   position: absolute;
   height: auto;
   width: auto;
-  bottom: 122px;
-  right: 8px;
+  bottom: 124px;
+  right: 10px;
 
   background-color: var(--dropdown-background);
   border-radius: var(--border-radius);
