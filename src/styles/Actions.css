@@ -119,6 +119,10 @@
   gap: var(--spacing-xxs);
 }
 
+.undo-redo-buttons.mobile {
+  display: none;
+}
+
 @media (max-width: 992px) {
   .actions-container {
     display: none;
@@ -150,7 +154,9 @@
     transform: rotate(-90deg);
     width: 120px;
   }
-  .undo-redo-buttons {
-    grid-column: 1 / -1;
+
+  .undo-redo-buttons.mobile {
+    display: flex;
+    gap: var(--spacing-xs);
   }
 }

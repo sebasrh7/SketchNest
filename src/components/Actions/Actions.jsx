@@ -115,7 +115,7 @@ const Actions = () => {
               <span className="transparency-circle opacity-0" />
             </div>
           </div>
-
+{/* 
           <div className="undo-redo-buttons">
             <button
               className="action-button"
@@ -131,7 +131,7 @@ const Actions = () => {
             >
               <Forward />
             </button>
-          </div>
+          </div> */}
         </div>
       </DropdownMenu>
     </aside>

@@ -5,10 +5,12 @@ import "../styles/DropdownMenu.css";
 const DropdownMenu = ({ id, children, icon }) => {
   const { openMenuId, setOpenMenuId } = useDropdown();
   const dropDownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const isOpen = openMenuId === id;
 
-  const toggleMenu = () => {
+  const toggleMenu = (e) => {
+    e.stopPropagation();
     setOpenMenuId(isOpen ? null : id);
   };
 
@@ -18,8 +20,13 @@ const DropdownMenu = ({ id, children, icon }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
-        setOpenMenuId(null);
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        closeMenu();
       }
     };
 
@@ -32,6 +39,7 @@ const DropdownMenu = ({ id, children, icon }) => {
   return (
     <div className="dropdown-menu">
       <button
+        ref={buttonRef}
         className="dropdown-toggle"
         onClick={toggleMenu}
         aria-expanded={isOpen}
