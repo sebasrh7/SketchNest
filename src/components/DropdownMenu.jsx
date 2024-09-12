@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import { useDropdown } from "../contexts/DropdownContext";
-import "../styles/DropdownMenu.css";
+import { useDropdown } from "@/contexts/DropdownContext";
+import "@/styles/DropdownMenu.css";
 
 const DropdownMenu = ({ id, children, icon }) => {
   const { openMenuId, setOpenMenuId } = useDropdown();
