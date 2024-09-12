@@ -1,21 +1,27 @@
-.dropdown {
+.dropdown-menu {
+  display: none;
   position: relative;
 }
 
-.dropdown-menu {
-  display: none;
-}
-
-.dropdown-content{
+.dropdown-content {
   position: absolute;
-  height: auto;
-  width: auto;
-  bottom: 124px;
-  right: 10px;
+  left: 0;
+  bottom: calc(100% + 20px);
 
   background-color: var(--dropdown-background);
   border-radius: var(--border-radius);
   border: var(--border-width) var(--border-style) var(--border-color);
   padding: var(--padding-xxs);
   box-shadow: var(--box-shadow);
+}
+
+.dropdown-content.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s, transform 0.3s ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }

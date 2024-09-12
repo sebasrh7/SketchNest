@@ -30,7 +30,7 @@
   border: var(--border-width) var(--border-style) var(--border-color);
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .transparency-slider {
     flex-direction: column;
     justify-content: space-between;

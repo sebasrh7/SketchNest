@@ -49,7 +49,7 @@
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .color-palette {
     .color-palette-container {
       padding: var(--padding-xxs);
@@ -61,16 +61,19 @@
 
       .palette-grid {
         grid-template-columns: repeat(6, 1fr);
-        place-content: center;
-        height: 44px;
+        height: 68px;
         gap: var(--spacing-xxs);
         border: none;
-        overflow: hidden;
+        overflow-y: hidden;
 
         .color-swatch {
           border: var(--border-width) var(--border-style) var(--border-color);
           width: 20px;
           height: 20px;
+
+          &:hover {
+            transform: none;
+          }
         }
       }
     }

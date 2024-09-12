@@ -44,7 +44,7 @@
   border-radius: 5px;
   padding: 0;
   height: 42px;
-    width: 98px;
+  width: 98px;
   cursor: pointer;
 
   &::-webkit-color-swatch-wrapper {
@@ -62,8 +62,8 @@
   }
 }
 
-@media (max-width: 992px) {
-  .input-wrapper {
+@media (max-width: 768px) {
+  .input-wrapper.transparency {
     transform: rotate(-90deg);
   }
 
@@ -72,9 +72,8 @@
   }
 
   .input-field[type="color"] {
-    width: 20px;
-    height: 44px;
+    height: 68px;
+    width: 32px;
     border-radius: 0;
-    transform: rotate(90deg);
   }
 }
