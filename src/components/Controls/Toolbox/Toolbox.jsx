@@ -1,17 +1,17 @@
 import React from "react";
-import { useCanvas } from "../../contexts/CanvasContext.jsx";
-import { TOOLS } from "../../utils/constants";
-import Button from "../Button.jsx";
-import DropdownMenu from "../DropdownMenu.jsx";
-import Tools from "../icons/Tools.jsx";
-import "../../styles/Toolbar.css";
+import { useCanvas } from "@/contexts/CanvasContext.jsx";
+import { TOOLS } from "@/utils/constants.jsx";
+import Button from "@/components/Button.jsx";
+import DropdownMenu from "@/components/DropdownMenu.jsx";
+import Tools from "@/components/icons/Tools.jsx";
+import "@/styles/Controls/Toolbox/Toolbox.css";
 
-const Toolbar = () => {
+const Toolbox = () => {
   const { setMode, clearCanvas, handlePicker, mode } = useCanvas();
 
   return (
-    <aside className="toolbar">
-      <div className="toolbar-container">
+    <aside className="toolbox">
+      <div className="toolbox-container">
         {TOOLS.map((tool) => (
           <Button
             key={tool.id}
@@ -32,8 +32,8 @@ const Toolbar = () => {
         ))}
       </div>
 
-      <DropdownMenu id="toolbar-menu" icon={<Tools />}>
-        <div className="toolbar-dropdown">
+      <DropdownMenu id="toolbox-menu" icon={<Tools />}>
+        <div className="toolbox-dropdown">
           {TOOLS.map((tool) => (
             <Button
               key={tool.id}
@@ -58,4 +58,4 @@ const Toolbar = () => {
   );
 };
 
-export default Toolbar;
+export default Toolbox;

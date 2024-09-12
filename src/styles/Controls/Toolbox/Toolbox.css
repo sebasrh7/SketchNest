@@ -1,9 +1,9 @@
-.toolbar {
+.toolbox {
   display: flex;
   justify-content: start;
   align-items: center;
 
-  .toolbar-container {
+  .toolbox-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
@@ -17,16 +17,17 @@
 }
 
 @media (max-width: 992px) {
-  .toolbar {
-    .toolbar-container {
+  .toolbox {
+    .toolbox-container {
       display: none;
     }
   }
+  
   .dropdown-menu {
     display: block;
   }
 
-  .toolbar-dropdown {
+  .toolbox-dropdown {
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: var(--spacing-xxs);
