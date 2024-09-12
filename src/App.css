@@ -1,8 +1,8 @@
 .app {
   display: grid;
   grid-template-areas:
-    "colors canvas toolbar"
-    "actions actions actions";
+    "color-palette canvas toolbox"
+    "stroke-settings stroke-settings stroke-settings";
   grid-template-columns: 1fr 1fr 1fr;
 
   place-content: center;
@@ -14,16 +14,16 @@
   grid-area: canvas;
 }
 
-.colors {
-  grid-area: colors;
+.color-palette {
+  grid-area: color-palette;
 }
 
-.toolbar {
-  grid-area: toolbar;
+.toolbox {
+  grid-area: toolbox;
 }
 
-.actions {
-  grid-area: actions;
+.stroke-settings {
+  grid-area: stroke-settings;
 }
 
 .controls {
