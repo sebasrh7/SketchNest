@@ -27,7 +27,7 @@ const ColorPalette = () => {
         </div>
 
         <Input
-          id="color-picker"
+          className="color-picker"
           name="color-picker"
           type="color"
           value={selectedColor}

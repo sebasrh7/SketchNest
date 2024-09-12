@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useCanvas } from "@/contexts/CanvasContext"; 
-import Header from "./Header"; 
+import { useCanvas } from "@/contexts/CanvasContext";
+import Header from "./Header";
 import "@/styles/Canvas/Canvas.css";
 
 const Canvas = () => {

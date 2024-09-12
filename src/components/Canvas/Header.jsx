@@ -9,6 +9,7 @@ import "@/styles/Canvas/Header.css";
 
 const Header = () => {
   const { uploadImageToCanvas, downloadDrawing } = useCanvas();
+
   const { theme, toggleTheme } = useTheme();
 
   const handleImageUpload = (event) => {

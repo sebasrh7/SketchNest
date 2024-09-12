@@ -11,6 +11,7 @@ const Transparency = () => {
         <span className="transparency-circle opacity-1" />
       </div>
       <Input
+        className="transparency"
         type="range"
         min="0.1"
         max="1"

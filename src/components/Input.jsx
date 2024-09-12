@@ -1,9 +1,9 @@
 import React from "react";
 import "@/styles/Input.css";
 
-const Input = ({ type = "text", value, onChange, ...props }) => {
+const Input = ({ type = "text", className, value, onChange, ...props }) => {
   return (
-    <div className="input-wrapper">
+    <div className={`input-wrapper ${className}`}>
       <input
         type={type}
         value={value}
