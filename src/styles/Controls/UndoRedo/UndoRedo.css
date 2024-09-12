@@ -1,0 +1,15 @@
+.undo-redo {
+  display: flex;
+  gap: var(--spacing-xxs);
+}
+
+.undo-redo.mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .undo-redo.mobile {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+}

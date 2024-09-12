@@ -78,3 +78,5 @@ export const PALETTE_COLORS = [
   "#A349A4",
   "#C8BFE7",
 ];
+
+export const MAX_HISTORY = 50; 

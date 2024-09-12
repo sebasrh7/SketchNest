@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { useCanvas } from "../../contexts/CanvasContext";
+import { useCanvas } from "@/contexts/CanvasContext";
 import Header from "./Header";
-
-import "../../styles/Canvas.css";
+import "@/styles/Canvas/Canvas.css";
 
 const Canvas = () => {
   const { canvasRef, startDrawing, draw, stopDrawing } = useCanvas();

@@ -25,7 +25,7 @@
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .canvas {
     .canvas-container {
       padding: var(--padding-xxs);
@@ -36,33 +36,36 @@
       overscroll-behavior: contain;
     }
 
-    .canvas-container::-webkit-scrollbar {
+    ::-webkit-scrollbar {
       height: 20px;
     }
 
-    .canvas-container::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {
       background: var(--scrollbar-track);
-      border-radius: var(--border-radius);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
     }
 
-    .canvas-container::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-thumb);
       border-radius: var(--border-radius);
-      border: 2px solid var(--scrollbar-track);
 
       background-repeat: no-repeat;
       background-position: center;
       background-size: 16px;
     }
 
-    .canvas-container::-webkit-scrollbar-thumb {
-      background-image: url("../assets/caret-left-right.-light.svg");
+    ::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-image: url("@/assets/caret-left-right.-light.svg");
     }
   }
   /* Modo oscuro */
   [data-theme="dark"] {
-    .canvas-container::-webkit-scrollbar-thumb {
-      background-image: url("../assets/caret-left-right-dark.svg");
+    ::-webkit-scrollbar-thumb {
+      background-image: url("@/assets/caret-left-right-dark.svg");
     }
   }
 }

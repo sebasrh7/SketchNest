@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import { useDropdown } from "../contexts/DropdownContext";
-import "../styles/DropdownMenu.css";
+import { useDropdown } from "@/contexts/DropdownContext";
+import "@/styles/DropdownMenu.css";
 
 const DropdownMenu = ({ id, children, icon }) => {
   const { openMenuId, setOpenMenuId } = useDropdown();
@@ -26,7 +26,7 @@ const DropdownMenu = ({ id, children, icon }) => {
         buttonRef.current &&
         !buttonRef.current.contains(event.target)
       ) {
-        closeMenu();
+        setOpenMenuId(null);
       }
     };
 
@@ -47,14 +47,16 @@ const DropdownMenu = ({ id, children, icon }) => {
       >
         {icon}
       </button>
+
       {isOpen && (
         <div
           ref={dropDownRef}
-          className="dropdown-content"
+          className={`dropdown-content ${isOpen ? "show" : ""}`}
           onClick={closeMenu}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
+          aria-hidden={!isOpen}
         >
           {children}
         </div>

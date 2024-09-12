@@ -1,0 +1,32 @@
+.stroke-settings {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.stroke-settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  padding: var(--padding-xs);
+  border-radius: 5px;
+  background-color: var(--actions-container);
+  border: var(--border-width) var(--border-style) var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .stroke-settings-container {
+    display: none;
+  }
+
+  .dropdown-menu {
+    display: block;
+  }
+
+  .stroke-settings-dropdown {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: var(--spacing-xxs);
+  }
+}

@@ -1,14 +1,15 @@
-import React, { useRef } from "react";
-import { useCanvas } from "../../contexts/CanvasContext";
-import useTheme from "../../hooks/useTheme";
-import Sun from "../icons/Sun";
-import Moon from "../icons/Moon";
-import Download from "../icons/Download";
-import Upload from "../icons/Upload";
-import "../../styles/Header.css";
+import React from "react";
+import { useCanvas } from "@/contexts/CanvasContext";
+import useTheme from "@/hooks/useTheme";
+import Sun from "@/components/icons/Sun";
+import Moon from "@/components/icons/Moon";
+import Download from "@/components/icons/Download";
+import Upload from "@/components/icons/Upload";
+import "@/styles/Canvas/Header.css";
 
 const Header = () => {
   const { uploadImageToCanvas, downloadDrawing } = useCanvas();
+
   const { theme, toggleTheme } = useTheme();
 
   const handleImageUpload = (event) => {

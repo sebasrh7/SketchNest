@@ -1,19 +1,22 @@
 import React from "react";
-import { useCanvas } from "../../contexts/CanvasContext";
-import { PALETTE_COLORS } from "../../utils/constants";
-import "../../styles/Colors.css";
+import { useCanvas } from "@/contexts/CanvasContext";
+import { PALETTE_COLORS } from "@/utils/constants";
+import "@/styles/Controls/ColorPalette/ColorPalette.css";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
 
-const Colors = () => {
+const ColorPalette = () => {
   const { handleChangeColor, selectedColor } = useCanvas();
 
   return (
-    <aside className="colors">
-      <div className="colors-container">
+    <aside className="color-palette">
+      <div className="color-palette-container">
         <h2>PALETTES</h2>
         <div className="palette-grid">
           {PALETTE_COLORS.map((color, index) => (
-            <button
+            <Button
               key={index}
+              id={index}
               className="color-swatch"
               style={{ backgroundColor: color }}
               onClick={() => {
@@ -23,18 +26,16 @@ const Colors = () => {
           ))}
         </div>
 
-        <input
-          type="color"
+        <Input
+          className="color-picker"
           name="color-picker"
-          id="color-picker"
+          type="color"
           value={selectedColor}
-          onChange={(e) => {
-            handleChangeColor(e.target.value);
-          }}
+          onChange={handleChangeColor}
         />
       </div>
     </aside>
   );
 };
 
-export default Colors;
+export default ColorPalette;

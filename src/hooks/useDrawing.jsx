@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { MODES, THICKNESS } from "../utils/constants";
 import {
   fillDrawing,
@@ -9,6 +9,7 @@ import {
   getCoordinates,
   hexToRgba,
 } from "../utils/drawingFunctions";
+import useUndoRedo from "./useUndoRedo";
 
 export const useDrawing = (ctxRef) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -21,7 +22,18 @@ export const useDrawing = (ctxRef) => {
   const [isShiftPressed, setIsShiftPressed] = useState(false);
   const [imageData, setImageData] = useState(null);
 
+  const { undos, redos, handleRedo, handleUndo, saveCanvasState } =
+    useUndoRedo(ctxRef);
+
   useEffect(() => {
+    const handleKeyDown = ({ key }) => {
+      if (key === "Shift") setIsShiftPressed(true);
+    };
+
+    const handleKeyUp = ({ key }) => {
+      if (key === "Shift") setIsShiftPressed(false);
+    };
+
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
 
@@ -31,104 +43,112 @@ export const useDrawing = (ctxRef) => {
     };
   }, []);
 
-  const startDrawing = (e) => {
-    setIsDrawing(true);
+  const startDrawing = useCallback(
+    (e) => {
+      setIsDrawing(true);
+      const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
+      setStartX(offsetX);
+      setStartY(offsetY);
+      setLastX(offsetX);
+      setLastY(offsetY);
 
-    const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
-
-    setStartX(offsetX);
-    setStartY(offsetY);
-    setLastX(offsetX);
-    setLastY(offsetY);
-
-    if (ctxRef.current) {
-      setImageData(
-        ctxRef.current.getImageData(
-          0,
-          0,
-          ctxRef.current.canvas.width,
-          ctxRef.current.canvas.height
-        )
-      );
-    }
-
-    if (mode === MODES.FILL) {
-      const fillColor = hexToRgba(ctxRef.current?.strokeStyle, ctxRef.current);
-      fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
-      setIsDrawing(false);
-    }
-  };
-
-  const draw = (e) => {
-    if (!isDrawing || !ctxRef.current) return; // Prevent drawing if not in drawing mode or no canvas context available yet
-
-    const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
-
-    if (mode === MODES.ERASER) {
-      ctxRef.current.globalCompositeOperation = "destination-out";
-    } else {
-      ctxRef.current.globalCompositeOperation = "source-over";
-    }
-
-    switch (mode) {
-      case MODES.PEN:
-      case MODES.ERASER:
-        drawFreehand(
-          ctxRef.current,
-          lastX,
-          lastY,
-          offsetX,
-          offsetY,
-          setLastX,
-          setLastY
+      if (ctxRef.current) {
+        setImageData(
+          ctxRef.current.getImageData(
+            0,
+            0,
+            ctxRef.current.canvas.width,
+            ctxRef.current.canvas.height
+          )
         );
-        break;
-      case MODES.RECTANGLE:
-        drawRectangle(
-          ctxRef.current,
-          startX,
-          startY,
-          offsetX,
-          offsetY,
-          isShiftPressed,
-          imageData
-        );
-        break;
-      case MODES.CIRCLE:
-        drawCircle(
-          ctxRef.current,
-          startX,
-          startY,
-          offsetX,
-          offsetY,
-          isShiftPressed,
-          imageData
-        );
-        break;
-      case MODES.LINE:
-        drawLine(
-          ctxRef.current,
-          startX,
-          startY,
-          offsetX,
-          offsetY,
-          isShiftPressed,
-          imageData
-        );
-        break;
-    }
-  };
+      }
 
-  const stopDrawing = () => {
+      if (mode === MODES.FILL) {
+        const fillColor = hexToRgba(
+          ctxRef.current?.strokeStyle,
+          ctxRef.current
+        );
+        fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
+        setIsDrawing(false);
+      }
+    },
+    [ctxRef, mode]
+  );
+
+  const draw = useCallback(
+    (e) => {
+      if (!isDrawing || !ctxRef.current) return;
+
+      const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
+
+      ctxRef.current.globalCompositeOperation =
+        mode === MODES.ERASER ? "destination-out" : "source-over";
+
+      switch (mode) {
+        case MODES.PEN:
+        case MODES.ERASER:
+          drawFreehand(
+            ctxRef.current,
+            lastX,
+            lastY,
+            offsetX,
+            offsetY,
+            setLastX,
+            setLastY
+          );
+          break;
+        case MODES.RECTANGLE:
+          drawRectangle(
+            ctxRef.current,
+            startX,
+            startY,
+            offsetX,
+            offsetY,
+            isShiftPressed,
+            imageData
+          );
+          break;
+        case MODES.CIRCLE:
+          drawCircle(
+            ctxRef.current,
+            startX,
+            startY,
+            offsetX,
+            offsetY,
+            isShiftPressed,
+            imageData
+          );
+          break;
+        case MODES.LINE:
+          drawLine(
+            ctxRef.current,
+            startX,
+            startY,
+            offsetX,
+            offsetY,
+            isShiftPressed,
+            imageData
+          );
+          break;
+      }
+    },
+    [
+      ctxRef,
+      isDrawing,
+      mode,
+      startX,
+      startY,
+      lastX,
+      lastY,
+      isShiftPressed,
+      imageData,
+    ]
+  );
+
+  const stopDrawing = useCallback(() => {
     setIsDrawing(false);
-  };
-
-  const handleKeyDown = ({ key }) => {
-    setIsShiftPressed(key === "Shift");
-  };
-  const handleKeyUp = ({ key }) => {
-    if (key === "Shift") setIsShiftPressed(false);
-  };
+    saveCanvasState();
+  }, [saveCanvasState]);
 
   return {
     isDrawing,
@@ -140,5 +160,10 @@ export const useDrawing = (ctxRef) => {
     setMode,
     setThickness,
     imageData,
+
+    undos,
+    redos,
+    handleUndo,
+    handleRedo,
   };
 };

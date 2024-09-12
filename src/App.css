@@ -1,8 +1,8 @@
 .app {
   display: grid;
   grid-template-areas:
-    "colors canvas toolbar"
-    "actions actions actions";
+    "color-palette canvas toolbox"
+    "stroke-settings stroke-settings stroke-settings";
   grid-template-columns: 1fr 1fr 1fr;
 
   place-content: center;
@@ -14,23 +14,23 @@
   grid-area: canvas;
 }
 
-.colors {
-  grid-area: colors;
+.color-palette {
+  grid-area: color-palette;
 }
 
-.toolbar {
-  grid-area: toolbar;
+.toolbox {
+  grid-area: toolbox;
 }
 
-.actions {
-  grid-area: actions;
+.stroke-settings {
+  grid-area: stroke-settings;
 }
 
 .controls {
   display: contents;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .app {
     display: flex;
     flex-direction: column;
@@ -38,10 +38,31 @@
   }
 
   .controls {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 0fr);
     align-items: center;
+    justify-items: center;
+    justify-content: center;
     gap: var(--spacing-xs);
-    max-width: 100%;
+
+    .color-palette {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+
+    .toolbox {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+
+    .stroke-settings {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+    }
+
+    .undo-redo {
+      grid-column: span 2 / span 4;
+      grid-row: 2 / 3;
+    }
   }
 }
