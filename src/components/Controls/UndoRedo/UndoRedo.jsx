@@ -16,7 +16,6 @@ const UndoRedo = ({ className }) => {
         disabled={undos?.length === 0}
         icon={<Back />}
       >
-        {undos.length}
       </Button>
       <Button
         className="redo-button"
@@ -24,7 +23,6 @@ const UndoRedo = ({ className }) => {
         disabled={redos?.length === 0}
         icon={<Forward />}
       >
-        {redos.length}
       </Button>
     </div>
   );

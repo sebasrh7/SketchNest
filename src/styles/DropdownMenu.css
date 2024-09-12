@@ -6,7 +6,7 @@
 .dropdown-content {
   position: absolute;
   left: 0;
-  bottom: calc(100% + 20px);
+  bottom: calc(100% + var(--spacing-xxs));
 
   background-color: var(--dropdown-background);
   border-radius: var(--border-radius);
