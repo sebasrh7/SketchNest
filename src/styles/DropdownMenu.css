@@ -5,9 +5,9 @@
 
 .dropdown-content {
   position: absolute;
-  left: 0;
-  bottom: calc(100% + var(--spacing-xxs));
-
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(100% + var(--spacing-xs));
   background-color: var(--dropdown-background);
   border-radius: var(--border-radius);
   border: var(--border-width) var(--border-style) var(--border-color);
@@ -17,11 +17,11 @@
 
 .dropdown-content.show {
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s, transform 0.3s ease-in-out;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 
   @starting-style {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateX(-50%) translateY(10px);
   }
 }
