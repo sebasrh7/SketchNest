@@ -1,6 +1,7 @@
 import React from "react";
 import { useCanvas } from "@/contexts/CanvasContext";
 import useTheme from "@/hooks/useTheme";
+import Button from "@/components/Button";
 import Sun from "@/components/icons/Sun";
 import Moon from "@/components/icons/Moon";
 import Download from "@/components/icons/Download";
@@ -29,9 +30,10 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-buttons">
-        <button onClick={downloadDrawing} className="header-button">
+        <Button onClick={downloadDrawing} className="header-button">
           <Download />
-        </button>
+        </Button>
+
         <label className="header-button">
           <Upload />
           <input
@@ -41,6 +43,7 @@ const Header = () => {
             hidden
           />
         </label>
+
         <button onClick={toggleTheme} className="header-button theme-button">
           {theme === "light" ? (
             <Moon className="header-button-icon" />

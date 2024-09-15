@@ -1,7 +1,15 @@
 import React from "react";
 import "@/styles/Button.css";
 
-const Button = ({ id, className, icon, onClick, children, style, disabled }) => {
+const Button = ({
+  id,
+  className,
+  icon,
+  onClick,
+  children,
+  style,
+  disabled,
+}) => {
   return (
     <button
       id={id}
