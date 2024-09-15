@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { MODES, THICKNESS } from "../utils/constants";
 import {
+  clearCanvas,
   fillDrawing,
   drawFreehand,
   drawRectangle,
@@ -22,8 +23,51 @@ export const useDrawing = (ctxRef) => {
   const [isShiftPressed, setIsShiftPressed] = useState(false);
   const [imageData, setImageData] = useState(null);
 
-  const { undos, redos, handleRedo, handleUndo, saveCanvasState } =
-    useUndoRedo(ctxRef);
+  const {
+    currentState,
+    canUndo,
+    canRedo,
+    handleRedo,
+    handleUndo,
+    saveCanvasState,
+    setCurrentStep,
+    setHistory,
+    STORAGE_KEY,
+  } = useUndoRedo();
+
+  useEffect(() => {
+    if (!currentState) {
+      const emptyCanvas = ctxRef.current.canvas.toDataURL();
+      setHistory([emptyCanvas]);
+      setCurrentStep(0);
+    }
+  }, [currentState, setHistory, setCurrentStep, STORAGE_KEY]);
+
+  useEffect(() => {
+    const storedHistory = localStorage.getItem(STORAGE_KEY);
+    const storedStep = localStorage.getItem(`${STORAGE_KEY}_step`);
+    if (storedHistory) {
+      const parsedHistory = JSON.parse(storedHistory);
+      setHistory(parsedHistory);
+      setCurrentStep(Number(storedStep));
+    }
+  }, [setHistory, setCurrentStep]);
+
+  useEffect(() => {
+    if (currentState) {
+      const img = new Image();
+      img.src = currentState;
+      img.onload = () => {
+        ctxRef.current.clearRect(
+          0,
+          0,
+          ctxRef.current.canvas.width,
+          ctxRef.current.canvas.height
+        );
+        ctxRef.current.drawImage(img, 0, 0);
+      };
+    }
+  }, [currentState]);
 
   useEffect(() => {
     const handleKeyDown = ({ key }) => {
@@ -46,7 +90,19 @@ export const useDrawing = (ctxRef) => {
   const startDrawing = useCallback(
     (e) => {
       setIsDrawing(true);
+
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
+
+      if (mode === MODES.FILL) {
+        const fillColor = hexToRgba(
+          ctxRef.current?.strokeStyle,
+          ctxRef.current
+        );
+        fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
+        saveCanvasState(ctxRef.current.canvas.toDataURL());
+        return;
+      }
+
       setStartX(offsetX);
       setStartY(offsetY);
       setLastX(offsetX);
@@ -61,15 +117,6 @@ export const useDrawing = (ctxRef) => {
             ctxRef.current.canvas.height
           )
         );
-      }
-
-      if (mode === MODES.FILL) {
-        const fillColor = hexToRgba(
-          ctxRef.current?.strokeStyle,
-          ctxRef.current
-        );
-        fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
-        setIsDrawing(false);
       }
     },
     [ctxRef, mode]
@@ -146,12 +193,13 @@ export const useDrawing = (ctxRef) => {
   );
 
   const stopDrawing = useCallback(() => {
+    if (isDrawing) saveCanvasState(ctxRef.current.canvas.toDataURL());
     setIsDrawing(false);
-    saveCanvasState();
-  }, [saveCanvasState]);
+  }, [isDrawing]);
 
   return {
     isDrawing,
+    setIsDrawing,
     mode,
     thickness,
     startDrawing,
@@ -160,9 +208,15 @@ export const useDrawing = (ctxRef) => {
     setMode,
     setThickness,
     imageData,
+    clearCanvas: () => {
+      clearCanvas(ctxRef);
+      saveCanvasState(ctxRef.current.canvas.toDataURL());
+    },
 
-    undos,
-    redos,
+    saveCanvasState,
+    currentState,
+    canUndo,
+    canRedo,
     handleUndo,
     handleRedo,
   };

@@ -6,24 +6,21 @@ import Forward from "@/components/icons/Forward";
 import "@/styles/Controls/UndoRedo/UndoRedo.css";
 
 const UndoRedo = ({ className }) => {
-  const { handleRedo, handleUndo, undos, redos } = useCanvas();
-
+  const { handleRedo, handleUndo, canUndo, canRedo } = useCanvas();
   return (
     <div className={`undo-redo ${className}`}>
       <Button
         className="undo-button"
         onClick={handleUndo}
-        disabled={undos?.length === 0}
+        disabled={!canUndo}
         icon={<Back />}
-      >
-      </Button>
+      ></Button>
       <Button
         className="redo-button"
         onClick={handleRedo}
-        disabled={redos?.length === 0}
+        disabled={!canRedo}
         icon={<Forward />}
-      >
-      </Button>
+      ></Button>
     </div>
   );
 };
