@@ -108,6 +108,18 @@ export const drawLine = (
   }
 };
 
+export const clearCanvas = (ctxRef) => {
+
+  if (ctxRef.current) {
+    ctxRef.current.clearRect(
+      0,
+      0,
+      ctxRef.current.canvas.width,
+      ctxRef.current.canvas.height
+    );
+  }
+};
+
 export const fillDrawing = (x, y, fillColor, ctx) => {
   const { width, height } = ctx.canvas;
   const imageData = ctx.getImageData(0, 0, width, height);
