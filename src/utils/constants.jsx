@@ -79,4 +79,6 @@ export const PALETTE_COLORS = [
   "#C8BFE7",
 ];
 
-export const MAX_HISTORY = 50; 
+export const MAX_HISTORY = 20;
+
+export const STORAGE_KEY = "canvas_history";

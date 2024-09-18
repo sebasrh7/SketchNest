@@ -16,6 +16,24 @@ export const drawFreehand = (
   setLastY(offsetY);
 };
 
+export const eraseFreehand = (
+  ctx,
+  lastX,
+  lastY,
+  offsetX,
+  offsetY,
+  setLastX,
+  setLastY
+) => {
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(offsetX, offsetY);
+  ctx.stroke();
+
+  setLastX(offsetX);
+  setLastY(offsetY);
+};
+
 export const drawRectangle = (
   ctx,
   startX,
@@ -109,7 +127,6 @@ export const drawLine = (
 };
 
 export const clearCanvas = (ctxRef) => {
-
   if (ctxRef.current) {
     ctxRef.current.clearRect(
       0,
@@ -198,10 +215,20 @@ export const getCoordinates = (e, ctx) => {
   }
 };
 
-export const hexToRgba = (hex, ctx) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const a = ctx.globalAlpha * 255;
+export const hexToRgba = (hex, transparency) => {
+  let r,
+    g,
+    b = 0;
+  if (hex.length === 4) {
+    r = parseInt(hex[1] + hex[1], 16);
+    g = parseInt(hex[2] + hex[2], 16);
+    b = parseInt(hex[3] + hex[3], 16);
+  } else if (hex.length === 7) {
+    r = parseInt(hex[1] + hex[2], 16);
+    g = parseInt(hex[3] + hex[4], 16);
+    b = parseInt(hex[5] + hex[6], 16);
+  }
+
+  const a = transparency * 255;
   return [r, g, b, a];
 };

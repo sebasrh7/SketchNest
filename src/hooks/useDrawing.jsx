@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { MODES, THICKNESS } from "../utils/constants";
+import { MODES } from "@/utils/constants";
+import { THICKNESS } from "@/utils/constants";
+
 import {
   clearCanvas,
+  eraseFreehand,
   fillDrawing,
   drawFreehand,
   drawRectangle,
@@ -11,17 +14,26 @@ import {
   hexToRgba,
 } from "../utils/drawingFunctions";
 import useUndoRedo from "./useUndoRedo";
+import { useStrokeSettings } from "@/hooks/useStrokeSettings";
 
 export const useDrawing = (ctxRef) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [mode, setMode] = useState(MODES.PEN);
-  const [thickness, setThickness] = useState(THICKNESS[0]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [lastX, setLastX] = useState(0);
   const [lastY, setLastY] = useState(0);
   const [isShiftPressed, setIsShiftPressed] = useState(false);
   const [imageData, setImageData] = useState(null);
+
+  const [thickness, setThickness] = useState(THICKNESS[0]);
+  const [transparency, setTransparency] = useState(1);
+
+  const { drawWithTransparency } = useStrokeSettings(
+    ctxRef,
+    setThickness,
+    setTransparency
+  );
 
   const {
     currentState,
@@ -30,44 +42,7 @@ export const useDrawing = (ctxRef) => {
     handleRedo,
     handleUndo,
     saveCanvasState,
-    setCurrentStep,
-    setHistory,
-    STORAGE_KEY,
-  } = useUndoRedo();
-
-  useEffect(() => {
-    if (!currentState) {
-      const emptyCanvas = ctxRef.current.canvas.toDataURL();
-      setHistory([emptyCanvas]);
-      setCurrentStep(0);
-    }
-  }, [currentState, setHistory, setCurrentStep, STORAGE_KEY]);
-
-  useEffect(() => {
-    const storedHistory = localStorage.getItem(STORAGE_KEY);
-    const storedStep = localStorage.getItem(`${STORAGE_KEY}_step`);
-    if (storedHistory) {
-      const parsedHistory = JSON.parse(storedHistory);
-      setHistory(parsedHistory);
-      setCurrentStep(Number(storedStep));
-    }
-  }, [setHistory, setCurrentStep]);
-
-  useEffect(() => {
-    if (currentState) {
-      const img = new Image();
-      img.src = currentState;
-      img.onload = () => {
-        ctxRef.current.clearRect(
-          0,
-          0,
-          ctxRef.current.canvas.width,
-          ctxRef.current.canvas.height
-        );
-        ctxRef.current.drawImage(img, 0, 0);
-      };
-    }
-  }, [currentState]);
+  } = useUndoRedo(ctxRef);
 
   useEffect(() => {
     const handleKeyDown = ({ key }) => {
@@ -93,20 +68,17 @@ export const useDrawing = (ctxRef) => {
 
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
 
-      if (mode === MODES.FILL) {
-        const fillColor = hexToRgba(
-          ctxRef.current?.strokeStyle,
-          ctxRef.current
-        );
-        fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
-        saveCanvasState(ctxRef.current.canvas.toDataURL());
-        return;
-      }
-
       setStartX(offsetX);
       setStartY(offsetY);
       setLastX(offsetX);
       setLastY(offsetY);
+
+      if (mode === MODES.FILL) {
+        const fillColor = hexToRgba(ctxRef.current?.strokeStyle, transparency);
+        fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
+        saveCanvasState(ctxRef.current.canvas.toDataURL());
+        return;
+      }
 
       if (ctxRef.current) {
         setImageData(
@@ -119,7 +91,7 @@ export const useDrawing = (ctxRef) => {
         );
       }
     },
-    [ctxRef, mode]
+    [ctxRef, mode, transparency]
   );
 
   const draw = useCallback(
@@ -131,53 +103,67 @@ export const useDrawing = (ctxRef) => {
       ctxRef.current.globalCompositeOperation =
         mode === MODES.ERASER ? "destination-out" : "source-over";
 
-      switch (mode) {
-        case MODES.PEN:
-        case MODES.ERASER:
-          drawFreehand(
-            ctxRef.current,
-            lastX,
-            lastY,
-            offsetX,
-            offsetY,
-            setLastX,
-            setLastY
-          );
-          break;
-        case MODES.RECTANGLE:
-          drawRectangle(
-            ctxRef.current,
-            startX,
-            startY,
-            offsetX,
-            offsetY,
-            isShiftPressed,
-            imageData
-          );
-          break;
-        case MODES.CIRCLE:
-          drawCircle(
-            ctxRef.current,
-            startX,
-            startY,
-            offsetX,
-            offsetY,
-            isShiftPressed,
-            imageData
-          );
-          break;
-        case MODES.LINE:
-          drawLine(
-            ctxRef.current,
-            startX,
-            startY,
-            offsetX,
-            offsetY,
-            isShiftPressed,
-            imageData
-          );
-          break;
-      }
+      const drawFunction = () => {
+        switch (mode) {
+          case MODES.PEN:
+            drawFreehand(
+              ctxRef.current,
+              lastX,
+              lastY,
+              offsetX,
+              offsetY,
+              setLastX,
+              setLastY
+            );
+            break;
+          case MODES.ERASER:
+            eraseFreehand(
+              ctxRef.current,
+              lastX,
+              lastY,
+              offsetX,
+              offsetY,
+              setLastX,
+              setLastY
+            );
+            break;
+          case MODES.RECTANGLE:
+            drawRectangle(
+              ctxRef.current,
+              startX,
+              startY,
+              offsetX,
+              offsetY,
+              isShiftPressed,
+              imageData
+            );
+            break;
+          case MODES.CIRCLE:
+            drawCircle(
+              ctxRef.current,
+              startX,
+              startY,
+              offsetX,
+              offsetY,
+              isShiftPressed,
+              imageData
+            );
+            break;
+          case MODES.LINE:
+            drawLine(
+              ctxRef.current,
+              startX,
+              startY,
+              offsetX,
+              offsetY,
+              isShiftPressed,
+              imageData
+            );
+            break;
+        }
+      };
+
+      drawWithTransparency(drawFunction, transparency);
     },
     [
       ctxRef,
@@ -189,11 +175,14 @@ export const useDrawing = (ctxRef) => {
       lastY,
       isShiftPressed,
       imageData,
+      transparency,
     ]
   );
 
   const stopDrawing = useCallback(() => {
-    if (isDrawing) saveCanvasState(ctxRef.current.canvas.toDataURL());
+    if (isDrawing) {
+      saveCanvasState(ctxRef.current.canvas.toDataURL());
+    }
     setIsDrawing(false);
   }, [isDrawing]);
 
@@ -201,17 +190,19 @@ export const useDrawing = (ctxRef) => {
     isDrawing,
     setIsDrawing,
     mode,
-    thickness,
     startDrawing,
     draw,
     stopDrawing,
     setMode,
-    setThickness,
     imageData,
     clearCanvas: () => {
       clearCanvas(ctxRef);
       saveCanvasState(ctxRef.current.canvas.toDataURL());
     },
+    setThickness,
+    setTransparency,
+    thickness,
+    transparency,
 
     saveCanvasState,
     currentState,

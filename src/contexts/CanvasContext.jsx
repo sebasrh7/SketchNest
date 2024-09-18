@@ -13,23 +13,25 @@ export const CanvasProvider = ({ children }) => {
 
   const {
     mode,
-    thickness,
     clearCanvas,
     startDrawing,
     draw,
     stopDrawing,
     setMode,
-    setThickness,
-
     isDrawing,
     setIsDrawing,
-
+    
     currentState,
     canUndo,
     canRedo,
     handleUndo,
     handleRedo,
     saveCanvasState,
+
+    setThickness,
+    setTransparency,
+    thickness,
+    transparency,
   } = useDrawing(ctxRef);
 
   const { handlePicker, handleChangeColor, selectedColor, isPickerActive } =
@@ -37,10 +39,11 @@ export const CanvasProvider = ({ children }) => {
 
   const { uploadImageToCanvas, downloadDrawing } = useFileControls(ctxRef);
 
-  const { handleChangeStrokeWidth, handleTransparency } = useStrokeSettings(
-    ctxRef,
-    setThickness
-  );
+  const {
+    handleChangeStrokeWidth,
+    handleTransparency,
+    drawWithTransparency,
+  } = useStrokeSettings(ctxRef, setThickness, setTransparency);
 
   return (
     <CanvasContext.Provider
@@ -50,6 +53,9 @@ export const CanvasProvider = ({ children }) => {
         setMode,
         mode,
         thickness,
+        transparency,
+        setTransparency,
+        setThickness,
 
         startDrawing,
         draw,
@@ -74,6 +80,7 @@ export const CanvasProvider = ({ children }) => {
         handleRedo,
         saveCanvasState,
 
+        drawWithTransparency,
         isDrawing,
         setIsDrawing,
       }}

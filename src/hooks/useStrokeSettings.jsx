@@ -1,7 +1,9 @@
-export const useStrokeSettings = (ctxRef, setThickness) => {
+
+
+export const useStrokeSettings = (ctxRef, setThickness, setTransparency) => {
   const handleTransparency = (e) => {
-    const value = e.target.value;
-    ctxRef.current.globalAlpha = value;
+    const value = parseFloat(e.target.value);
+    setTransparency(value);
   };
 
   const handleChangeStrokeWidth = (width) => {
@@ -9,5 +11,16 @@ export const useStrokeSettings = (ctxRef, setThickness) => {
     setThickness(width);
   };
 
-  return { handleTransparency, handleChangeStrokeWidth };
+  const drawWithTransparency = (drawFunction, transparency) => {
+    const { globalAlpha } = ctxRef.current;
+    ctxRef.current.globalAlpha = transparency;
+    drawFunction();
+    ctxRef.current.globalAlpha = globalAlpha;
+  };
+
+  return {
+    handleChangeStrokeWidth,
+    handleTransparency,
+    drawWithTransparency,
+  };
 };
