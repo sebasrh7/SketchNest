@@ -126,7 +126,7 @@ export const drawLine = (
   }
 };
 
-export const clearCanvas = (ctxRef) => {
+export const clear = (ctxRef) => {
   if (ctxRef.current) {
     ctxRef.current.clearRect(
       0,
