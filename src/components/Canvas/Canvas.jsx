@@ -49,12 +49,12 @@ const Canvas = () => {
     }, 500);
 
     const canvasContainer = document.getElementById("canvas-container");
-    canvasContainer.addEventListener("scroll", handleCustomScroll);
-    canvasContainer.addEventListener("scrollend", handleScrollEnd);
+    canvasContainer.addEventListener("onscroll", handleCustomScroll);
+    canvasContainer.addEventListener("onscrollend", handleScrollEnd);
 
     return () => {
-      canvasContainer.removeEventListener("scroll", handleCustomScroll);
-      canvasContainer.removeEventListener("scrollend", handleScrollEnd);
+      canvasContainer.removeEventListener("onscroll", handleCustomScroll);
+      canvasContainer.removeEventListener("onscrollend", handleScrollEnd);
     };
   }, [isScrolling, scrollPositionX, scrollWidth]);
 
