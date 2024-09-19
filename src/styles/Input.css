@@ -1,6 +1,7 @@
 .input-wrapper {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .input-field[type="range"] {
@@ -44,7 +45,7 @@
   border-radius: 5px;
   padding: 0;
   height: 42px;
-  width: 98px;
+  width: 100%;
   cursor: pointer;
 
   &::-webkit-color-swatch-wrapper {
@@ -63,6 +64,9 @@
 }
 
 @media (max-width: 768px) {
+  .input-wrapper {
+    width: min-content;
+  }
   .input-wrapper.transparency {
     transform: rotate(-90deg);
   }
@@ -74,6 +78,5 @@
   .input-field[type="color"] {
     height: 68px;
     width: 32px;
-    border-radius: 0;
   }
 }

@@ -7,7 +7,7 @@ import Tools from "@/components/icons/Tools.jsx";
 import "@/styles/Controls/Toolbox/Toolbox.css";
 
 const Toolbox = () => {
-  const { setMode, clearCanvas, handlePicker, mode } = useCanvas();
+  const { setMode, clearCanvas, handlePicker, mode, isPickerActive } = useCanvas();
 
   return (
     <aside className="toolbox">
@@ -16,17 +16,20 @@ const Toolbox = () => {
           <Button
             key={tool.id}
             id={tool.id}
-            className={`tool ${mode === tool.id ? "active" : ""}`}
+            className={`tool ${mode === tool.id ? "active" : ""} ${tool.id === "PICKER" && isPickerActive ? "disabled" : ""}`}
             icon={tool.icon}
             onClick={() => {
-              if (tool.id === "CLEAR") {
-                clearCanvas();
-              } else if (tool.id === "PICKER") {
-                handlePicker();
-                setMode(tool.id);
-              } else {
-                setMode(tool.id);
-              }
+                switch (tool.id) {
+                case "CLEAR":
+                  clearCanvas();
+                  break;
+                case "PICKER":
+                  handlePicker();
+                  break;
+                default:
+                  setMode(tool.id);
+                  break;
+                }
             }}
           />
         ))}
@@ -39,6 +42,7 @@ const Toolbox = () => {
               key={tool.id}
               id={tool.id}
               className={`tool ${mode === tool.id ? "active" : ""}`}
+              
               icon={tool.icon}
               onClick={() => {
                 if (tool.id === "CLEAR") {

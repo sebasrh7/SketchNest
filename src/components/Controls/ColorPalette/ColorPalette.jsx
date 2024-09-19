@@ -31,7 +31,9 @@ const ColorPalette = () => {
           name="color-picker"
           type="color"
           value={selectedColor}
-          onChange={handleChangeColor}
+          onChange={(e) => {
+            handleChangeColor(e.target.value);
+          }}
         />
       </div>
     </aside>
