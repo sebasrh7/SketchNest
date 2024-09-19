@@ -62,7 +62,7 @@ html {
 
 [data-theme="light"] {
   /* Background */
-  --background-gradient-start: #dfe9f3;
+  --background-gradient-start: #ebdff3;
   --background-gradient-end: #fff;
 
   /* Text */
@@ -100,7 +100,7 @@ html {
   --header-span: var(--color-primary-a30);
 
   /* Toolbar */
-  --toolbar-background: var(--color-primary-a0);
+  --toolbar-background: var(--color-primary-a10);
 
   /* Dropdown Menu */
   --dropdown-background: var(--color-primary-a0);
@@ -113,7 +113,7 @@ html {
 [data-theme="dark"] {
   /* Background */
   --background-gradient-start: #000;
-  --background-gradient-end: #2c3e50;
+  --background-gradient-end: #261a30;
 
   /* Text */
   --text-color: var(--color-primary-a0);

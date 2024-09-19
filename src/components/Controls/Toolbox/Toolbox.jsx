@@ -25,7 +25,6 @@ const Toolbox = () => {
                   break;
                 case "PICKER":
                   handlePicker();
-                  setMode(tool.id);
                   break;
                 default:
                   setMode(tool.id);

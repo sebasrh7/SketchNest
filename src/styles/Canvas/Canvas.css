@@ -22,11 +22,16 @@
       -ms-touch-action: none;
       touch-action: none;
     }
+
+    .preview-container {
+      display: none;
+    }
   }
 }
 
 @media (max-width: 768px) {
   .canvas {
+    position: relative;
     .canvas-container {
       padding: var(--padding-xxs);
       overflow-x: auto;
@@ -34,6 +39,21 @@
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+
+      .preview-container.scrolling {
+        display: block;
+        position: absolute;
+        top: 64px;
+        left: 14px;
+        z-index: 100;
+        border: 1px solid #000000;
+
+        .preview {
+          border: 1px solid #a43131;
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
 
     ::-webkit-scrollbar {

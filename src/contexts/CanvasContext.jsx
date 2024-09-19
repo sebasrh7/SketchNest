@@ -62,8 +62,6 @@ export const CanvasProvider = ({ children }) => {
   // Funciones relacionadas con el dibujo
   const startDrawing = useCallback(
     (e) => {
-      e.preventDefault();
-
       setIsDrawing(true);
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
       setStartX(offsetX);
@@ -94,8 +92,7 @@ export const CanvasProvider = ({ children }) => {
 
   const draw = useCallback(
     (e) => {
-      e.preventDefault();
-      if (!isDrawing || !ctxRef.current) return;
+      if (!isDrawing || !ctxRef.current || isPickerActive) return;
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
 
       const drawFunction = () => {
@@ -176,6 +173,7 @@ export const CanvasProvider = ({ children }) => {
       isShiftPressed,
       imageData,
       transparency,
+      isPickerActive,
     ]
   );
 
@@ -222,15 +220,24 @@ export const CanvasProvider = ({ children }) => {
   };
 
   const handlePicker = async () => {
-    if (!window.EyeDropper) return;
+    if (!window.EyeDropper) {
+      {
+        alert(
+          "The EyeDropper API is not supported in this browser. Please use a different browser."
+        );
+        return;
+      }
+    }
     setIsPickerActive(true);
     const prevMode = mode;
+    setMode(MODES.PICKER);
     try {
       const eyeDropper = new EyeDropper();
       const result = await eyeDropper.open();
       handleChangeColor(result.sRGBHex);
     } catch (error) {
-      console.error("Error using EyeDropper:", error);
+      alert("Failed to pick a color. Please try again.");
+      console.error("Error using EyeDropper API", error);
     } finally {
       setMode(prevMode);
       setIsPickerActive(false);
@@ -364,6 +371,10 @@ export const CanvasProvider = ({ children }) => {
       setCurrentStep(0);
     }
   }, [history, currentStep, ctxRef]);
+
+  useEffect(() => {
+    restoreCanvasState();
+  }, [restoreCanvasState]);
 
   return (
     <CanvasContext.Provider

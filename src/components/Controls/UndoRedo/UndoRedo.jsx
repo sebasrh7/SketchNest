@@ -8,8 +8,6 @@ import "@/styles/Controls/UndoRedo/UndoRedo.css";
 const UndoRedo = ({ className }) => {
   const { canUndo, canRedo, handleUndo, handleRedo } = useCanvas();
 
-  console.log("UndoRedo -> canUndo", canUndo);
-  console.log("UndoRedo -> canRedo", canRedo);
   return (
     <div className={`undo-redo ${className}`}>
       <Button

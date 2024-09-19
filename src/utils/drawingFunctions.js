@@ -154,11 +154,11 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
     return;
   }
 
+  const visited = new Array(data.length).fill(false);
   const stack = [[x, y]];
 
   while (stack.length) {
     const [currentX, currentY] = stack.pop();
-
     const currentIndex = pixelIndex(currentX, currentY, width);
 
     if (
@@ -166,6 +166,7 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
       currentX >= width ||
       currentY < 0 ||
       currentY >= height ||
+      visited[currentIndex] ||
       !colorsMatch(
         [
           data[currentIndex],
@@ -178,6 +179,8 @@ export const fillDrawing = (x, y, fillColor, ctx) => {
     ) {
       continue;
     }
+
+    visited[currentIndex] = true;
 
     // Cambiar el color del pixel actual al color de relleno
     data[currentIndex] = fillColor[0];
