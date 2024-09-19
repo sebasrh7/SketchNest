@@ -4,13 +4,11 @@ import { useCanvas } from "@/contexts/CanvasContext";
 import Back from "@/components/icons/Back";
 import Forward from "@/components/icons/Forward";
 import "@/styles/Controls/UndoRedo/UndoRedo.css";
-import { useDrawing } from "../../../hooks/useDrawing";
 
 const UndoRedo = ({ className }) => {
-  const { ctxRef } = useCanvas();
-  const { canUndo, canRedo, handleUndo, handleRedo } = useDrawing(ctxRef);
+  const { canUndo, canRedo, handleUndo, handleRedo } = useCanvas();
 
-  console.log("UndoRedo -> canUndo", canUndo);  
+  console.log("UndoRedo -> canUndo", canUndo);
   console.log("UndoRedo -> canRedo", canRedo);
   return (
     <div className={`undo-redo ${className}`}>

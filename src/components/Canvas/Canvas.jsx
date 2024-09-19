@@ -11,7 +11,7 @@ const Canvas = () => {
     return () => {
       canvasRef.current.removeEventListener("touchmove", draw);
     };
-  }, [draw]);
+  }, [draw, canvasRef]);
 
   return (
     <section className="canvas">
@@ -26,7 +26,6 @@ const Canvas = () => {
           onMouseUp={stopDrawing}
           onMouseLeave={stopDrawing}
           onTouchStart={startDrawing}
-          // onTouchMove={draw}
           onTouchEnd={stopDrawing}
           onTouchCancel={stopDrawing}
         />
