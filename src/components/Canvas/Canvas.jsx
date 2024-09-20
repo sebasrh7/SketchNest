@@ -1,97 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useCanvas } from "@/contexts/CanvasContext";
+import React, { useEffect } from "react";
+import useCanvas from "@/contexts/CanvasContext";
 import Header from "./Header";
 import "@/styles/Canvas/Canvas.css";
-import { throttle } from "lodash";
-
-import { useCallback } from "react";
 
 const Canvas = () => {
-  const { canvasRef, startDrawing, draw, stopDrawing } = useCanvas();
-  const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollPositionX, setScrollPositionX] = useState(0);
-  const [scrollWidth, setScrollWidth] = useState(0);
-  const previewCanvasRef = useRef(null);
+  const {
+    canvasRef,
+    previewCanvasRef,
+    canvasContainerRef,
+    isScrolling,
+    startDrawing,
+    draw,
+    stopDrawing,
+  } = useCanvas();
 
   useEffect(() => {
-    const handleDraw = (e) => {
-      if (!isScrolling) {
-        draw(e);
-        updatePreview();
-      }
-    };
-
-    const canvas = canvasRef.current;
-    canvas.addEventListener("touchmove", handleDraw, { passive: false });
+    canvasRef.current.addEventListener("touchmove", draw, { passive: false });
 
     return () => {
-      canvas.removeEventListener("touchmove", handleDraw);
+      canvasRef.current.removeEventListener("touchmove", draw);
     };
-  }, [isScrolling, canvasRef, draw]);
-
-  useEffect(() => {
-    const handleScrollEnd = () => {
-      setIsScrolling(false);
-    };
-
-    const handleCustomScroll = throttle((e) => {
-      const scrollLeft = e.target.scrollLeft;
-      const totalScrollWidth = e.target.scrollWidth - e.target.clientWidth;
-
-      setScrollWidth(totalScrollWidth);
-      setScrollPositionX(scrollLeft);
-
-      if (!isScrolling) {
-        setIsScrolling(true);
-      }
-
-      updatePreview();
-    }, 500);
-
-    const canvasContainer = document.getElementById("canvas-container");
-    canvasContainer.addEventListener("onscroll", handleCustomScroll);
-    canvasContainer.addEventListener("onscrollend", handleScrollEnd);
-
-    return () => {
-      canvasContainer.removeEventListener("onscroll", handleCustomScroll);
-      canvasContainer.removeEventListener("onscrollend", handleScrollEnd);
-    };
-  }, [isScrolling, scrollPositionX, scrollWidth]);
-
-  const updatePreview = useCallback(() => {
-    const previewCanvas = previewCanvasRef.current;
-    const ctx = previewCanvas.getContext("2d");
-    const mainCanvas = canvasRef.current;
-
-    ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-
-    ctx.drawImage(
-      mainCanvas,
-      0,
-      0,
-      mainCanvas.width,
-      mainCanvas.height,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height
-    );
-
-    const viewWidth = previewCanvas.height;
-    const viewHeight = previewCanvas.height;
-    const viewX =
-      (scrollPositionX / scrollWidth) * (previewCanvas.width - viewWidth);
-
-    const viewY = 0;
-    ctx.strokeStyle = "#45215d";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(viewX, viewY, viewWidth, viewHeight);
-  }, [scrollPositionX, scrollWidth, canvasRef]);
+  }, [canvasRef, draw]);
 
   return (
     <section className="canvas">
       <Header />
-      <div className="canvas-container" id="canvas-container">
+      <div className="canvas-container" ref={canvasContainerRef}>
         <canvas
           ref={canvasRef}
           width={770}
@@ -105,12 +39,15 @@ const Canvas = () => {
           onTouchCancel={stopDrawing}
         />
 
-        <canvas
-          ref={previewCanvasRef}
-          width={100}
-          height={64}
-          className={`preview-container ${isScrolling ? "scrolling" : ""}`}
-        />
+        {isScrolling && (
+          <div
+            className={`preview-container ${
+              isScrolling ? "scrolling" : ""
+            }`}
+          >
+            <canvas ref={previewCanvasRef} className="preview" width={120} height={77} />
+          </div>
+        )}
       </div>
     </section>
   );

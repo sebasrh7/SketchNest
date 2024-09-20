@@ -1,5 +1,5 @@
 import React from "react";
-import { useCanvas } from "@/contexts/CanvasContext.jsx";
+import useCanvas from "@/contexts/CanvasContext.jsx";
 import { TOOLS } from "@/utils/constants.jsx";
 import Button from "@/components/Button.jsx";
 import DropdownMenu from "@/components/DropdownMenu.jsx";

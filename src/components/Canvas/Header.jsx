@@ -1,5 +1,5 @@
 import React from "react";
-import { useCanvas } from "@/contexts/CanvasContext";
+import useCanvas from "@/contexts/CanvasContext";
 import useTheme from "@/hooks/useTheme";
 import Button from "@/components/Button";
 import Sun from "@/components/icons/Sun";
