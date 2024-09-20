@@ -55,8 +55,6 @@
         justify-content: center;
         align-items: center;
 
-        border: var(--border-width) var(--border-style) var(--border-color);
-
         &.scrolling {
           opacity: 1;
           transform: scale(1);
@@ -65,12 +63,6 @@
             opacity: 0;
             transform: scale(0.8);
           }
-        }
-
-        .preview {
-          width: 120px;
-          height: 77px;
-          border: none;
         }
       }
     }
