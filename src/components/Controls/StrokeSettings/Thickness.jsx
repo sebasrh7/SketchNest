@@ -1,6 +1,6 @@
 import React from "react";
 import { THICKNESS } from "@/utils/constants";
-import { useCanvas } from "@/contexts/CanvasContext";
+import useCanvas from "@/contexts/CanvasContext";
 import Button from "@/components/Button";
 import "@/styles/Controls/StrokeSettings/Thickness.css";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useCanvas } from "@/contexts/CanvasContext";
+import useCanvas from "@/contexts/CanvasContext";
 import { PALETTE_COLORS } from "@/utils/constants";
 import "@/styles/Controls/ColorPalette/ColorPalette.css";
 import Button from "@/components/Button";

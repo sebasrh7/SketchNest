@@ -32,7 +32,7 @@
 
 @media (max-width: 768px) {
   .transparency-slider {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: space-between;
     padding: var(--padding-xxs);
     max-width: 32px;

@@ -22,10 +22,9 @@
       -ms-touch-action: none;
       touch-action: none;
     }
-
-    .preview-container {
-      display: none;
-    }
+  }
+  .preview-container {
+    display: none;
   }
 }
 
@@ -38,24 +37,40 @@
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
+      overscroll-behavior-x: contain;
+      width: 100%;
 
-      .preview-container.scrolling {
-        display: block;
+      .preview-container {
         position: absolute;
         top: 64px;
         left: 14px;
         z-index: 100;
-        border: 1px solid #000000;
+        pointer-events: none;
+        background-color: var(--canvas-container);
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+        opacity: 0;
+        transform: scale(0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.scrolling {
+          opacity: 1;
+          transform: scale(1);
+
+          @starting-style {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+        }
 
         .preview {
-          border: 1px solid #a43131;
-          width: 20px;
-          height: 20px;
+          width: 120px;
+          height: 77px;
         }
       }
     }
-
     ::-webkit-scrollbar {
       height: 20px;
     }

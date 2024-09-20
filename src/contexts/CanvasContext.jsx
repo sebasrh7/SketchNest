@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 
 import { useCanvasSetup } from "@/hooks/useCanvasSetup";
@@ -27,6 +28,7 @@ import {
   MAX_HISTORY,
   STORAGE_KEY,
 } from "@/utils/constants";
+import { throttle } from "lodash";
 
 // Crear el contexto
 const CanvasContext = createContext();
@@ -59,9 +61,17 @@ export const CanvasProvider = ({ children }) => {
   const [history, setHistory] = useState([]);
   const [currentStep, setCurrentStep] = useState(-1);
 
+  // Estados de scroll y vista previa del dibujo
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollPositionX, setScrollPositionX] = useState(0);
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const previewCanvasRef = useRef(null);
+  const canvasContainerRef = useRef(null);
+
   // Funciones relacionadas con el dibujo
   const startDrawing = useCallback(
     (e) => {
+      if (isPickerActive || isScrolling) return;
       setIsDrawing(true);
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
       setStartX(offsetX);
@@ -73,6 +83,7 @@ export const CanvasProvider = ({ children }) => {
         const fillColor = hexToRgba(ctxRef.current.strokeStyle, transparency);
         fillDrawing(offsetX, offsetY, fillColor, ctxRef.current);
         saveCanvasState(ctxRef.current.canvas.toDataURL());
+        updatePreview();
         return;
       }
 
@@ -87,12 +98,13 @@ export const CanvasProvider = ({ children }) => {
         );
       }
     },
-    [ctxRef, mode, transparency]
+    [ctxRef, mode, transparency, isPickerActive, isScrolling]
   );
 
   const draw = useCallback(
-    (e) => {
-      if (!isDrawing || !ctxRef.current || isPickerActive) return;
+    throttle((e) => {
+      if (!isDrawing || !ctxRef.current) return;
+
       const { offsetX, offsetY } = getCoordinates(e, ctxRef.current);
 
       const drawFunction = () => {
@@ -161,7 +173,7 @@ export const CanvasProvider = ({ children }) => {
       ctxRef.current.globalAlpha = transparency;
       drawFunction();
       ctxRef.current.globalAlpha = globalAlpha;
-    },
+    }, 10),
     [
       ctxRef,
       isDrawing,
@@ -184,10 +196,13 @@ export const CanvasProvider = ({ children }) => {
     setIsDrawing(false);
   }, [isDrawing]);
 
-  const clearCanvas = () => {
+  const clearCanvas = useCallback(() => {
+    if (isScrolling) return;
+
     clear(ctxRef);
     saveCanvasState(ctxRef.current.canvas.toDataURL());
-  };
+    updatePreview();
+  }, [ctxRef, isScrolling]);
 
   useEffect(() => {
     const handleKeyDown = ({ key }) => {
@@ -376,11 +391,78 @@ export const CanvasProvider = ({ children }) => {
     restoreCanvasState();
   }, [restoreCanvasState]);
 
+  // Funciones de eventos de scroll
+
+  // Actualizar la vista previa del dibujo
+  const updatePreview = useCallback(() => {
+    const previewCanvas = previewCanvasRef.current;
+    const canvasContainer = canvasContainerRef.current;
+    const ctx = previewCanvas.getContext("2d");
+    const mainCanvas = canvasRef.current;
+
+    ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+
+    ctx.drawImage(
+      mainCanvas,
+      0,
+      0,
+      mainCanvas.width,
+      mainCanvas.height,
+      0,
+      0,
+      previewCanvas.width,
+      previewCanvas.height
+    );
+
+    // Calculate the visible width ratio
+    const visibleWidthRatio = canvasContainer.clientWidth / mainCanvas.width;
+    console.log(visibleWidthRatio);
+
+    // Calculate the preview rectangle width
+    const previewRectWidth = visibleWidthRatio * previewCanvas.width;
+
+    // Calculate the scroll position ratio
+    const scrollRatio =
+      canvasContainer.scrollLeft /
+      (mainCanvas.width - canvasContainer.clientWidth);
+
+    // Calculate the preview rectangle position
+    const previewRectX = scrollRatio * (previewCanvas.width - previewRectWidth);
+
+    ctx.strokeStyle = "#45215d";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(previewRectX, 0, previewRectWidth, previewCanvas.height);
+  }, [scrollPositionX, scrollWidth, canvasRef]);
+
+  useEffect(() => {
+    const canvasContainer = canvasContainerRef.current;
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+      updatePreview();
+    };
+
+    const handleScrollEnd = () => {
+      setIsScrolling(false);
+    };
+
+    canvasContainer.addEventListener("scroll", handleScroll);
+    canvasContainer.addEventListener("scrollend", handleScrollEnd);
+
+    return () => {
+      canvasContainer.removeEventListener("scroll", handleScroll);
+      canvasContainer.removeEventListener("scrollend", handleScrollEnd);
+    };
+  }, [canvasContainerRef, updatePreview]);
+
   return (
     <CanvasContext.Provider
       value={{
         canvasRef,
+        previewCanvasRef,
+        canvasContainerRef,
         ctxRef,
+        isScrolling,
         isDrawing,
         setIsDrawing,
         mode,
@@ -416,10 +498,12 @@ export const CanvasProvider = ({ children }) => {
 };
 
 // Hook personalizado para acceder al contexto
-export const useCanvas = () => {
+const useCanvas = () => {
   const context = useContext(CanvasContext);
   if (context === undefined) {
     throw new Error("useCanvas must be used within a CanvasProvider");
   }
   return context;
 };
+
+export default useCanvas;

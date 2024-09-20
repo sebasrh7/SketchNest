@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@/components/Button";
-import { useCanvas } from "@/contexts/CanvasContext";
+import useCanvas from "@/contexts/CanvasContext";
 import Back from "@/components/icons/Back";
 import Forward from "@/components/icons/Forward";
 import "@/styles/Controls/UndoRedo/UndoRedo.css";

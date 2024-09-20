@@ -204,34 +204,34 @@ const colorsMatch = (color1, color2) =>
   color1.every((value, i) => value === color2[i]);
 
 export const getCoordinates = (e, ctx) => {
-  if (e.touches) {
-    const rect = ctx.canvas.getBoundingClientRect();
+  const { canvas } = ctx;
+  const { left, top } = canvas.getBoundingClientRect();
+
+  if (e.touches && e.touches.length > 0) {
+    const { clientX, clientY } = e.touches[0];
     return {
-      offsetX: e.touches[0].clientX - rect.left,
-      offsetY: e.touches[0].clientY - rect.top,
+      offsetX: clientX - left,
+      offsetY: clientY - top,
     };
   } else {
-    return {
-      offsetX: e.nativeEvent.offsetX,
-      offsetY: e.nativeEvent.offsetY,
-    };
+    // Evento de ratón u otro evento nativo
+    const { offsetX, offsetY } = e.nativeEvent;
+    return { offsetX, offsetY };
   }
 };
 
 export const hexToRgba = (hex, transparency) => {
-  let r,
-    g,
-    b = 0;
+  let r, g, b;
   if (hex.length === 4) {
     r = parseInt(hex[1] + hex[1], 16);
     g = parseInt(hex[2] + hex[2], 16);
     b = parseInt(hex[3] + hex[3], 16);
   } else if (hex.length === 7) {
-    r = parseInt(hex[1] + hex[2], 16);
-    g = parseInt(hex[3] + hex[4], 16);
-    b = parseInt(hex[5] + hex[6], 16);
+    r = parseInt(hex.slice(1, 3), 16);
+    g = parseInt(hex.slice(3, 5), 16);
+    b = parseInt(hex.slice(5, 7), 16);
   }
-
-  const a = transparency * 255;
+  const a = Math.round(transparency * 255); // Correct transparency to RGBA scale
   return [r, g, b, a];
 };
+

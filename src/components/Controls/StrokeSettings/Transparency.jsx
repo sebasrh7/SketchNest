@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "@/components/Input";
 import "@/styles/Controls/StrokeSettings/Transparency.css";
-import { useCanvas } from "@/contexts/CanvasContext";
+import useCanvas from "@/contexts/CanvasContext";
 
 const Transparency = () => {
   const { transparency, handleTransparency } = useCanvas();
